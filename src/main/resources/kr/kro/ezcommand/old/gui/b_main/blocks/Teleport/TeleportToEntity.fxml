@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="anchorPane" maxHeight="40.0" maxWidth="517.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="399.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.kro.ezcommand.old.gui.b_main.blocks.Teleport.TeleportToEntityController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff8511" height="40.0" stroke="BLACK" strokeType="INSIDE" width="399.0" />
+      <ComboBox fx:id="target" editable="true" layoutX="14.0" layoutY="8.0" prefHeight="22.0" prefWidth="119.0" />
+      <Text layoutX="133.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(이)가 " />
+      <ComboBox fx:id="destination" editable="true" layoutX="169.0" layoutY="8.0" prefHeight="22.0" prefWidth="119.0" />
+      <Text layoutX="288.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="에게 순간이동하기" />
+   </children>
+</AnchorPane>

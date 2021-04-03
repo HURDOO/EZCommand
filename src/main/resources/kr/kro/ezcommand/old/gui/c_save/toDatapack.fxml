@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.kro.ezcommand.old.gui.c_save.toDatapackController">
+   <children>
+      <Text layoutX="57.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="데이터팩 이름: " />
+      <TextField fx:id="name" layoutX="138.0" layoutY="41.0" prefHeight="22.0" prefWidth="405.0" promptText="NewDatapack" />
+      <Text layoutX="57.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="데이터팩 설명: " />
+      <TextField fx:id="description" layoutX="138.0" layoutY="68.0" prefHeight="22.0" prefWidth="405.0" promptText="A Nice Datapack" />
+      <Text layoutX="57.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="저장될 폴더: " />
+      <TextField fx:id="path" layoutX="126.0" layoutY="97.0" prefHeight="22.0" prefWidth="417.0" promptText="" />
+      <Button fx:id="findPath" layoutX="470.0" layoutY="119.0" mnemonicParsing="false" text="찾아보기..." />
+      <Button fx:id="convert" layoutX="428.0" layoutY="327.0" mnemonicParsing="false" text="데이터팩으로 변환" />
+   </children>
+</AnchorPane>

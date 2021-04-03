@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.kro.ezcommand.old.gui.b_main.MainStageController">
+   <children>
+      <MenuBar prefHeight="28.0" prefWidth="1200.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="파일">
+            <items>
+                  <MenuItem fx:id="newTab" mnemonicParsing="false" text="새 탭" />
+                <MenuItem fx:id="convertToCommand" mnemonicParsing="false" text="커맨드로 변환" />
+                <MenuItem fx:id="convertToDatapack" mnemonicParsing="false" text="데이터 팩으로 변환" />
+            </items>
+          </Menu>
+          <Menu fx:id="editMenu" mnemonicParsing="false" text="편집">
+            <items>
+              <MenuItem fx:id="move" mnemonicParsing="false" text="이동" />
+                <MenuItem fx:id="delete" mnemonicParsing="false" text="삭제" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="도움말">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <SplitPane fx:id="divider" dividerPositions="0.4" layoutX="6.0" layoutY="29.0" prefHeight="771.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
+        <items>
+          <AnchorPane fx:id="blockListPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <TabPane fx:id="Tabs" prefHeight="488.0" prefWidth="821.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

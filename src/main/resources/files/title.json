@@ -1,0 +1,22 @@
+{
+  "type" : "block",
+  "description" : "제목을 표시합니다.",
+
+  "content" : "%text%를 자신의 %title% 위치에 표시하기",
+  "parse" : "title @s %title% %text%",
+  "args" : {
+    "title" : {
+      "description" : "제목: 화면 중앙\n부제목: 제목 하단\n액션바: 아이템 핫바 위",
+      "type" : "select",
+      "args" : ["제목","부제목","액션바"],
+      "parse" : ["title","subtitle","actionbar"],
+      "default" : 0
+    },
+    "text" : {
+      "description" : "표시할 텍스트",
+      "type" : "raw_json_text_format",
+      "default" : "\"텍스트\"",
+      "useSmallQuote" : false
+    }
+  }
+}

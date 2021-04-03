@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="anchorPane" maxHeight="40.0" maxWidth="371.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="343.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.kro.ezcommand.old.gui.b_main.blocks.weather.WEATHERController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7ebaff" height="40.0" stroke="BLACK" strokeType="INSIDE" width="343.0" />
+      <Text layoutX="8.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="날씨를 " />
+      <TextField fx:id="secondsGUI" layoutX="47.0" layoutY="9.0" prefHeight="20.0" prefWidth="87.0" />
+      <Text layoutX="134.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="초 동안 " />
+      <ChoiceBox fx:id="weatherTypeGUI" layoutX="176.0" layoutY="9.0" prefHeight="20.0" prefWidth="133.0" />
+      <Text layoutX="310.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" 하기" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,12 @@
+.text {
+    -fx-font-size:10pt;
+    -fx-font-family: "Jalnan";
+}
+
+.color {
+    -fx-text-inner-color: black;
+}
+
+.color:incorrect {
+    -fx-text-inner-color: red;
+}

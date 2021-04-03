@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="769.6" prefWidth="368.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.kro.ezcommand.old.gui.b_main.BlockListGUIController">
+   <children>
+      <Accordion prefHeight="770.0" prefWidth="361.0">
+        <panes>
+          <TitledPane animated="false" text="실행">
+               <content>
+                  <VBox fx:id="execution" prefHeight="200.0" prefWidth="1000.0" />
+               </content>
+          </TitledPane>
+          <TitledPane animated="false" text="세계">
+               <content>
+                  <VBox fx:id="world" prefHeight="200.0" prefWidth="1000.0" />
+               </content>
+          </TitledPane>
+          <TitledPane animated="false" text="엔티티">
+              <content>
+                  <VBox fx:id="entity" prefHeight="200.0" prefWidth="1000.0" />
+              </content>
+          </TitledPane>
+        </panes>
+      </Accordion>
+   </children>
+</AnchorPane>

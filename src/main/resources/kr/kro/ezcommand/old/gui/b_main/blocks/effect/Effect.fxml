@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="40.0" prefWidth="393.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.kro.ezcommand.old.gui.b_main.blocks.effect.EffectController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff8511" height="40.0" stroke="BLACK" strokeType="INSIDE" width="393.0" />
+      <ComboBox fx:id="entity" editable="true" layoutX="14.0" layoutY="8.0" prefHeight="22.0" prefWidth="119.0" />
+      <Text layoutX="136.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="에게  " />
+      <ComboBox fx:id="effect" editable="true" layoutX="163.0" layoutY="8.0" prefHeight="22.0" prefWidth="101.0" />
+      <Button fx:id="" layoutX="265.0" layoutY="8.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="4.0" text="+" />
+      <Text layoutX="288.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="  효과를 부여하기" />
+   </children>
+</AnchorPane>

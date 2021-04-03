@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.kro.ezcommand.ui.fxml.MainStageMenuBarController">
+  <MenuBar>
+    <Menu mnemonicParsing="false" text="파일">
+      <MenuItem fx:id="button_toCommand" mnemonicParsing="false" text="커맨드로 변환"/>
+      <SeparatorMenuItem mnemonicParsing="false"/>
+      <MenuItem mnemonicParsing="false" text="닫기"/>
+    </Menu>
+    <Menu mnemonicParsing="false" text="편집">
+      <MenuItem mnemonicParsing="false" text="삭제"/>
+    </Menu>
+    <Menu mnemonicParsing="false" text="도움말">
+      <MenuItem mnemonicParsing="false" text="정보"/>
+    </Menu>
+  </MenuBar>
+</Pane>

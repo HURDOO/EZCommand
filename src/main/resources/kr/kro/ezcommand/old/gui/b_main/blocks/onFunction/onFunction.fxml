@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="60.0" prefWidth="346.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.kro.ezcommand.old.gui.b_main.blocks.onFunction.onFunctionController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#6f6f6f" height="40.0" stroke="BLACK" strokeType="INSIDE" width="346.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="20.0" />
+      <CubicCurve controlX1="-115.20140075683594" controlX2="8.795211791992188" controlY1="-52.10854721069336" controlY2="-10.0" endX="8.795211791992188" endY="-10.0" fill="#6f6f6f" layoutX="151.0" layoutY="30.0" startX="-151.0" startY="-9.999992370605469" stroke="BLACK" />
+      <TextField fx:id="functionNameGUI" layoutX="5.0" layoutY="29.0" prefHeight="22.0" prefWidth="213.0" text="myFunction" />
+      <Text fill="WHITE" layoutX="225.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="함수가 호출되었을 때" />
+   </children>
+</AnchorPane>

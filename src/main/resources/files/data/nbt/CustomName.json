@@ -1,0 +1,10 @@
+{
+  "name" : "이름",
+  "parse" : "CustomName",
+  "description" : "몹의 사용자 지정 이름을 결정합니다.",
+  "value" : {
+    "type" : "raw_json_text_format",
+    "default" : "\"텍스트\"",
+    "useSmallQuote" : true
+  }
+}

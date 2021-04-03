@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="70.0" prefWidth="384.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.kro.ezcommand.old.gui.b_main.blocks.Attribute.AttributeModifierAddController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff8511" height="70.0" stroke="BLACK" strokeType="INSIDE" width="384.0" />
+      <ComboBox fx:id="target" editable="true" layoutX="14.0" layoutY="8.0" prefHeight="22.0" prefWidth="150.0" />
+      <Text layoutX="164.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" 의" />
+      <ChoiceBox fx:id="attribute" layoutX="188.0" layoutY="8.0" prefHeight="22.0" prefWidth="134.0" />
+      <Text layoutX="322.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="  능력치에" />
+      <Button fx:id="act" layoutX="14.0" layoutY="35.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="258.0" text="Button" />
+      <Text layoutX="278.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="변경자 추가하기" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.kro.ezcommand.old.gui.b_main.specific.SpecificAttributeModifierController">
+   <children>
+      <Text layoutX="16.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="능력치:  " />
+       <ChoiceBox fx:id="attribute" layoutX="61.0" layoutY="19.0" prefHeight="22.0" prefWidth="318.0" />
+      <Line endX="380.0" endY="43.98828887939453" layoutX="3.0" layoutY="5.0" startX="17.299999237060547" startY="43.98828887939453" />
+      <Text layoutX="155.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="새 능력치 변경자" />
+      <Text layoutX="16.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="이름:  " />
+      <TextField fx:id="name" layoutX="49.0" layoutY="78.0" prefHeight="22.0" prefWidth="331.0" promptText="영문 숫자 .+-_" />
+      <Text layoutX="16.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="UUID:  " />
+      <TextField fx:id="uuid" layoutX="58.0" layoutY="108.0" prefHeight="22.0" prefWidth="281.0" promptText="00000000-0000-0000-0000-000000000000" />
+      <Button fx:id="newUuid" layoutX="345.0" layoutY="108.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="33.0" text="⇔" />
+      <Text layoutX="17.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="변경 연산 방법:  " />
+      <ChoiceBox fx:id="calculate" layoutX="105.0" layoutY="135.0" prefHeight="22.0" prefWidth="274.0" />
+      <Text layoutX="17.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="변경될 값:  " />
+      <TextField fx:id="amount" layoutX="77.0" layoutY="159.0" prefHeight="22.0" prefWidth="305.0" promptText="소수" />
+      <Button fx:id="ok" layoutX="125.0" layoutY="263.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="60.0" text="확인" />
+      <Button fx:id="cancel" layoutX="212.0" layoutY="263.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="60.0" text="취소" />
+   </children>
+</AnchorPane>

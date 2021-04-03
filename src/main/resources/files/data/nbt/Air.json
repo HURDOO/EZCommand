@@ -1,0 +1,11 @@
+{
+  "name" : "산소",
+  "parse" : "Air",
+  "description" : "몹이 쉴 수 있는 숨을 결정합니다. (단위: 초)\n공기중에 있을 때의 값은 300이며,\n값이 0인 동안 1의 피해를 입습니다.",
+  "value" : {
+    "type" : "number",
+    "format" : "int",
+    "range" : [0, 300],
+    "default" : 300
+  }
+}

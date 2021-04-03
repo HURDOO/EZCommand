@@ -1,0 +1,24 @@
+{
+  "type" : "block",
+  "description" : "날씨를 변경합니다",
+
+  "content" : "날씨를 %duration%초 동안 %weather% 하기",
+  "parse" : "weather %weather% %duration%",
+
+  "args": {
+    "duration": {
+      "description": "날씨가 지속될 기간 (단위: 초)",
+      "type": "number",
+      "format": "int",
+      "range": [0, "INT_MAX"],
+      "default": 300
+    },
+    "weather": {
+      "description": "폭퐁우: 비+번개",
+      "type": "select",
+      "args": ["맑게", "비가 오게", "폭퐁우가 몰아치게"],
+      "parse": ["clear", "rain", "thunder"],
+      "default": 0
+    }
+  }
+}

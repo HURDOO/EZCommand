@@ -1,0 +1,22 @@
+{
+  "type" : "block",
+  "description" : "데이터팩을 활성화/비활성화 시킵니다.",
+
+  "content" : "%name% 데이터팩 활성화: %able%",
+  "parse" : "datapack %able% %name%",
+
+  "args" : {
+    "able" : {
+      "description" : "활성화/비활성화",
+      "type" : "boolean",
+      "parse" : ["enable","disable"],
+      "default" : true
+    },
+    "name" : {
+      "description" : "데이터팩 ID",
+      "type" : "string",
+      "default" : "minecraft:datapack",
+      "allowSpacing" : false
+    }
+  }
+}
