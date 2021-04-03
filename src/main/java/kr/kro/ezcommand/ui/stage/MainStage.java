@@ -68,7 +68,7 @@ public class MainStage
         }
         try {
             // run
-            tab.addBlock(FileParser.parse(MainStage.class.getResource("/files/title.json").openStream()));
+            tab.addBlock(FileParser.parse(MainStage.class.getResource("/files/datapack_enable_disable.json").openStream()));
         } catch(ParseException | IOException e) {
             e.printStackTrace();
         }

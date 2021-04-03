@@ -1,9 +1,8 @@
 package kr.kro.ezcommand.engine.parser;
 
+import kr.kro.ezcommand.engine.parser.type.*;
 import kr.kro.ezcommand.engine.parser.type.Number;
 import kr.kro.ezcommand.engine.parser.type.rjtf.RawJsonTextFormat;
-import kr.kro.ezcommand.engine.parser.type.Select;
-import kr.kro.ezcommand.engine.parser.type.TextLabel;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -82,7 +81,12 @@ public class FileParser
                             }
                             break;
                         case "string":
-
+                            StringLabel string = new StringLabel(str,arg);
+                            ezBlock.addElement(string);
+                            break;
+                        case "boolean":
+                            BooleanLabel bool = new BooleanLabel(str,arg);
+                            ezBlock.addElement(bool);
                             break;
                         default:
                             throw new IllegalArgumentException("Illegal block type!");

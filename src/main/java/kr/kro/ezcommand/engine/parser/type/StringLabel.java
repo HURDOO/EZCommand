@@ -25,11 +25,10 @@ public class StringLabel implements EZBlockElement {
 
     @Override
     public String toCommand() {
-        return null;
+        return ui.textProperty().getValue();
     }
 
     private PseudoClass incorrect = PseudoClass.getPseudoClass("incorrect");
-    boolean allowSpacing;
 
     public StringLabel(String key, JSONObject object) {
         id = key;
@@ -40,23 +39,23 @@ public class StringLabel implements EZBlockElement {
         String defaultValue = object.getOrDefault("default", "minecraft:datapack").toString();
         ui.setText(defaultValue);
 
-        allowSpacing = (boolean) object.getOrDefault("allowSpacing", true);
-
         ui.getStylesheets().add("/src/main/resources/css/ErrorableTextField.css");
         ui.getStyleClass().add("text");
 
-        if(allowSpacing) {
+        boolean allowSpacing;
+        allowSpacing = (boolean) object.getOrDefault("allowSpacing", true);
+        if(allowSpacing == false) {
             ui.getStyleClass().add("color");
-            ui.textProperty().addListener(((observable, oldValue, newValue) -> {
-                if(newValue.contains(" ")) ui.pseudoClassStateChanged(incorrect, true);
-                else ui.pseudoClassStateChanged(incorrect, false);
-                resize();
-            }));
-        }
-        else {
             ui.textProperty().addListener((observable, oldValue, newValue) -> {
+                ui.pseudoClassStateChanged(incorrect, newValue.isBlank() || newValue.contains(" "));
                 resize();
             });
+        }
+        else {
+            ui.textProperty().addListener(((observable, oldValue, newValue) -> {
+                ui.pseudoClassStateChanged(incorrect, newValue.isBlank());
+                resize();
+            }));
         }
 
     }
