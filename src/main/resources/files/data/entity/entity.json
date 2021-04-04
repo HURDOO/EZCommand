@@ -1,15 +1,5 @@
 {
   "name" : "minecraft:entity",
   "type" : "entity",
-  "nbt" : [
-    {
-      "name" : "이름 표시",
-      "parse" : "CustomNameVisible",
-      "description" : "엔티티 위에 이름표를 표시할지 결정합니다.",
-      "value" : {
-        "type" : "boolean",
-        "default" : false
-      }
-    }
-  ]
+  "nbt" : []
 }
