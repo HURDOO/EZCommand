@@ -3,6 +3,7 @@ package kr.kro.ezcommand.ui.fxml;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
+import kr.kro.ezcommand.engine.EZTab;
 import kr.kro.ezcommand.engine.parser.FileParser;
 import kr.kro.ezcommand.ui.stage.MainStage;
 
@@ -16,7 +17,7 @@ public class MainStageMenuBarController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         button_toCommand.setOnAction(event -> {
-            System.out.println(MainStage.test.toCommand());
+            System.out.println(EZTab.nowTab.toCommand());
         });
     }
 }

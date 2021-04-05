@@ -1,5 +1,6 @@
 package kr.kro.ezcommand.engine.parser.type.rjtf;
 
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -8,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
 import kr.kro.ezcommand.ui.fxml.RJTFTextEditorController;
 import kr.kro.ezcommand.ui.stage.RJTFStage;
@@ -33,8 +35,10 @@ public class RawJsonTextFormat implements EZBlockElement {
     private String id;
     private boolean useSmallQuote;
 
-    public RawJsonTextFormat(String name, JSONObject object) throws IOException {
+    public RawJsonTextFormat(EZBlock block,String name, JSONObject object) throws IOException {
         id = name;
+        parent = block;
+        this.object = object;
 
         String description = object.get("description").toString();
         String value = object.get("default").toString();
@@ -45,7 +49,7 @@ public class RawJsonTextFormat implements EZBlockElement {
             useSmallQuote = false;
         }
         JsonText text1 = new JsonText();
-        text1.setText("텍스트");
+        text1.setText(value);
         content.add(text1);
 
         updateText();
@@ -96,7 +100,33 @@ public class RawJsonTextFormat implements EZBlockElement {
             builder.append("...");
         }
         ui.setText(builder.toString());
+        Platform.runLater(() -> {
+            parent.resize();
+        });
     }
 
+    private EZBlock parent;
+    @Override
+    public EZBlock getEZBlock() {
+        return parent;
+    }
+
+    private JSONObject object;
+    public RawJsonTextFormat clone(EZBlock block) {
+        RawJsonTextFormat clone;
+        try {
+            clone = new RawJsonTextFormat(parent,id,object);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        clone.parent = parent;
+        clone.content.clear();
+        for(JsonText text : content) {
+            clone.content.add(text.clone());
+        }
+        clone.updateText();
+        return clone;
+    }
 }
 

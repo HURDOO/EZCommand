@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.text.Text;
+import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
 import org.json.simple.JSONObject;
 
@@ -23,6 +24,12 @@ public class StringLabel implements EZBlockElement {
         return id;
     }
 
+    private EZBlock parent;
+    @Override
+    public EZBlock getEZBlock() {
+        return parent;
+    }
+
     @Override
     public String toCommand() {
         return ui.textProperty().getValue();
@@ -30,8 +37,14 @@ public class StringLabel implements EZBlockElement {
 
     private PseudoClass incorrect = PseudoClass.getPseudoClass("incorrect");
 
-    public StringLabel(String key, JSONObject object) {
+    public void setText(String text) {
+        ui.setText(text);
+    }
+
+    public StringLabel(EZBlock block,String key, JSONObject object) {
+        this.parent = block;
         id = key;
+        this.object = object;
 
         String description = object.get("description").toString();
         ui.setTooltip(new Tooltip(description));
@@ -41,6 +54,7 @@ public class StringLabel implements EZBlockElement {
 
         ui.getStylesheets().add("/src/main/resources/css/ErrorableTextField.css");
         ui.getStyleClass().add("text");
+        ui.getStyleClass().add("font");
 
         boolean allowSpacing;
         allowSpacing = (boolean) object.getOrDefault("allowSpacing", true);
@@ -58,6 +72,7 @@ public class StringLabel implements EZBlockElement {
             }));
         }
 
+        resize();
     }
 
     private void resize()
@@ -70,8 +85,20 @@ public class StringLabel implements EZBlockElement {
                     + 2d; // Add some spacing
             ui.setPrefWidth(width); // Set the width
             ui.positionCaret(ui.getCaretPosition()); // If you remove this line, it flashes a little bit
+
+            parent.resize();
         });
 
         // https://stackoverflow.com/questions/12737829/javafx-textfield-resize-to-text-length
+    }
+
+    private JSONObject object;
+
+    @Override
+    public StringLabel clone(EZBlock block) {
+        StringLabel label = new StringLabel(parent,id,object);
+        label.parent = block;
+        label.setText(ui.getText());
+        return label;
     }
 }

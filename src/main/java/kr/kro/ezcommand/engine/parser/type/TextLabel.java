@@ -1,11 +1,20 @@
 package kr.kro.ezcommand.engine.parser.type;
 
 import javafx.scene.control.Label;
+import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
 
-public class TextLabel extends Label implements EZBlockElement {
+public class TextLabel implements EZBlockElement {
+
+    private Label ui = new Label();
     public Label getUI() {
-        return this;
+        return ui;
+    }
+
+    Integer id;
+    @Override
+    public String getId() {
+        return id.toString();
     }
 
     @Override
@@ -13,9 +22,31 @@ public class TextLabel extends Label implements EZBlockElement {
         return null;
     }
 
-    public TextLabel() {
-        super("");
-        super.setStyle("-fx-font-size:10pt; -fx-font-family: \"Jalnan\"");
+    public void setText(String text) {
+        ui.setText(text);
+    }
+
+    public TextLabel(EZBlock block,int cnt,String text) {
+        id = cnt;
+        parent = block;
+        setText(text);
+    }
+
+    private EZBlock parent;
+    public void setEZBlock(EZBlock parent) {
+        this.parent = parent;
+    }
+    @Override
+    public EZBlock getEZBlock() {
+        return parent;
+    }
+
+    @Override
+    public TextLabel clone(EZBlock block) throws CloneNotSupportedException {
+        TextLabel label = new TextLabel(parent,id,ui.getText());
+        label.parent = block;
+        label.setEZBlock(parent);
+        return label;
     }
 }
 

@@ -5,6 +5,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.text.Text;
 import kr.kro.ezcommand.Main;
+import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -27,7 +28,18 @@ public class Select implements EZBlockElement {
         return parseList;
     }
 
-    public Select(String key, JSONObject object) {
+    private EZBlock parent;
+    public EZBlock getEZBlock() {
+        return parent;
+    }
+
+    public void select(int index) {
+        ui.getSelectionModel().select(index);
+    }
+
+    public Select(EZBlock block,String key, JSONObject object) {
+        this.object = object;
+        parent = block;
 
         String description = object.get("description").toString();
         JSONArray list1 = (JSONArray) object.get("args");
@@ -41,7 +53,7 @@ public class Select implements EZBlockElement {
             ui.getItems().add(arg.toString());
         }
         ui.getSelectionModel().select(value);
-        ui.setStyle("-fx-font-size:10pt; -fx-font-family: \"Jalnan\"");
+        ui.getStyleClass().add("font");
         ui.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             resize(newValue.toString());
         });
@@ -55,11 +67,23 @@ public class Select implements EZBlockElement {
             text.setFont(Main.JALNAN);
             double width = text.getLayoutBounds().getWidth() * 1.5 + 25d;
             ui.setPrefWidth(width);
+
+            parent.resize();
         });
     }
 
     public java.lang.String toCommand() {
         if(parseList == null) return ui.getSelectionModel().getSelectedItem().toString();
         return parseList.get(ui.getSelectionModel().getSelectedIndex());
+    }
+
+    private JSONObject object;
+
+    @Override
+    public Select clone(EZBlock block) {
+        Select select = new Select(parent,id,object);
+        select.parent = block;
+        select.select(ui.getSelectionModel().getSelectedIndex());
+        return select;
     }
 }

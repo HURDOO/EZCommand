@@ -5,6 +5,7 @@ import javafx.css.PseudoClass;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.text.Text;
+import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -20,7 +21,15 @@ public class Number implements EZBlockElement {
         return ui;
     }
 
+
+
     private TextField ui = new TextField();
+
+    public EZBlock getEZBlock() {
+        return parent;
+    }
+
+    private EZBlock parent;
 
     private PseudoClass incorrect = PseudoClass.getPseudoClass("incorrect");
 
@@ -29,7 +38,16 @@ public class Number implements EZBlockElement {
 
     boolean isDouble;
 
-    public Number(String key, JSONObject object) {
+    public void setValue(Long num) {
+        ui.setText(num.toString());
+    }
+    public void setValue(Double num) {
+        ui.setText(num.toString());
+    }
+
+    public Number(EZBlock block,String key, JSONObject object) {
+        parent = block;
+        this.object = object;
 
         String description = object.get("description").toString();
         JSONArray numList = (JSONArray) object.get("range");
@@ -72,6 +90,7 @@ public class Number implements EZBlockElement {
         ui.getStylesheets().add("/src/main/resources/css/ErrorableTextField.css");
         ui.getStyleClass().add("text");
         ui.getStyleClass().add("color");
+        ui.getStyleClass().add("font");
 
         ui.textProperty().addListener(((observable, oldValue, newValue) -> {
             try {
@@ -98,7 +117,10 @@ public class Number implements EZBlockElement {
                     + 2d; // Add some spacing
             ui.setPrefWidth(width); // Set the width
             ui.positionCaret(ui.getCaretPosition()); // If you remove this line, it flashes a little bit
+
+            parent.resize();
         });
+
 
         // https://stackoverflow.com/questions/12737829/javafx-textfield-resize-to-text-length
     }
@@ -177,5 +199,19 @@ public class Number implements EZBlockElement {
                 break;
         }
         return s;
+    }
+
+    private JSONObject object;
+
+    @Override
+    public Number clone(EZBlock block) {
+        Number number = new Number(parent,id,object);
+        number.parent = block;
+
+        if(value_long == null) number.setValue(value_double);
+        else if(value_double == null) number.setValue(value_long);
+        else throw new IllegalArgumentException("value is long nor double!");
+
+        return number;
     }
 }
