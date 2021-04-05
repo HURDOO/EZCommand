@@ -190,7 +190,33 @@ public class JsonText {
     public List<JsonText> getExtra() {
         return extra;
     }
-    public void setExtra(List<JsonText> extra) {
+    /* public void setExtra(List<JsonText> extra) {
         this.extra = extra;
+    } */
+
+
+    public JsonText clone() {
+        JsonText text = new JsonText();
+        text.setText(this.text);
+        text.setColor(color);
+        text.setBold(bold);
+        text.setItalic(italic);
+        text.setUnderlined(underlined);
+        text.setStrikethrough(strikethrough);
+        text.setObfuscated(obfuscated);
+        try {
+            text.setClickEvent(clickEvent.clone());
+        } catch (NullPointerException e) {
+            text.setClickEvent(null);
+        }
+        try {
+            text.setHoverEvent(hoverEvent.clone());
+        } catch (NullPointerException e) {
+            text.setHoverEvent(null);
+        }
+        for(JsonText extraText : extra) {
+            text.getExtra().add(extraText.clone());
+        }
+        return text;
     }
 }

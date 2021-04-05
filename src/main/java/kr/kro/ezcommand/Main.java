@@ -18,11 +18,13 @@ public class Main extends Application
     public void start(Stage primaryStage) throws Exception {
         System.setProperty("prism.lcdtext", "false"); // 폰트파일 로드전에 실행
         JALNAN = Font.loadFont(FileParser.class.getResourceAsStream("/font/Jalnan.ttf"),10);
-        FONTAWESOME = Font.loadFont(FileParser.class.getResourceAsStream("/font/Font Awesome 5 Free-Solid-900.otf"),10);
         Font.loadFont(FileParser.class.getResourceAsStream("/font/NanumFontSetup_TTF_BARUNGOTHIC/NanumBarunGothic.ttf"),10);
         Font.loadFont(FileParser.class.getResourceAsStream("/font/NanumFontSetup_TTF_BARUNGOTHIC/NanumBarunGothic_Italic.ttf"),10);
         Font.loadFont(FileParser.class.getResourceAsStream("/font/NanumFontSetup_TTF_BARUNGOTHIC/NanumBarunGothicBold.ttf"),10);
         Font.loadFont(FileParser.class.getResourceAsStream("/font/NanumFontSetup_TTF_BARUNGOTHIC/NanumBarunGothicBold_Italic.ttf"),10);
+
+        Font nanumCoding = Font.loadFont(FileParser.class.getResourceAsStream("/font/NanumGothicCoding-2.5/NanumGothicCoding-Bold.ttf"),10);
+        System.out.println(nanumCoding.getFamily());
         MainStage.create();
     }
 }

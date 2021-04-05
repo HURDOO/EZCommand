@@ -16,6 +16,20 @@ public class ClickEvent {
     private ClickActionType action = ClickActionType.NONE;
     private String value = "";
 
+    public String getValue() {
+        return value;
+    }
+    public void setValue(String value) {
+        this.value = value;
+    }
+    public ClickActionType getAction() {
+        return action;
+    }
+    public void setAction(ClickActionType action) {
+        this.action = action;
+    }
+
+
     public JSONObject toJSON() {
         JSONObject object = new JSONObject();
         if(action == ClickActionType.NONE) return object;
@@ -29,5 +43,12 @@ public class ClickEvent {
 
         object.put("value",value);
         return object;
+    }
+
+    public ClickEvent clone() {
+        ClickEvent event = new ClickEvent();
+        event.setAction(action);
+        event.setValue(value);
+        return event;
     }
 }

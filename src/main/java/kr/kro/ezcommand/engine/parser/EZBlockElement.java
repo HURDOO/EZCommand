@@ -9,4 +9,8 @@ public interface EZBlockElement
     String getId();
 
     String toCommand();
+
+    EZBlock getEZBlock();
+
+    EZBlockElement clone(EZBlock block) throws CloneNotSupportedException;
 }

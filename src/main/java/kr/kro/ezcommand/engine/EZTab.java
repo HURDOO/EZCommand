@@ -10,6 +10,7 @@ import java.util.List;
 
 public class EZTab
 {
+    public static EZTab nowTab = null;
 
     public EZTab() {
         ui = new Tab();
@@ -39,7 +40,7 @@ public class EZTab
     public String toCommand() {
         String command = "";
         for(EZBlock block : blocks) {
-            command += block.toCommand();
+            command += block.toCommand() + "\n";
         }
         return command;
     }

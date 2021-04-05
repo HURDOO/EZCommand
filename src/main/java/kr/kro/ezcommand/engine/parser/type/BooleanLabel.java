@@ -3,6 +3,7 @@ package kr.kro.ezcommand.engine.parser.type;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Tooltip;
+import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -21,15 +22,27 @@ public class BooleanLabel implements EZBlockElement {
         return id;
     }
 
+    public void setSelected(boolean bool) {
+        ui.setSelected(bool);
+    }
+
     @Override
     public String toCommand() {
         return ui.isSelected() ? parseTrue : parseFalse;
     }
 
+    private EZBlock parent;
+    @Override
+    public EZBlock getEZBlock() {
+        return parent;
+    }
+
     String parseTrue,parseFalse;
 
-    public BooleanLabel(String id, JSONObject object) {
+    public BooleanLabel(EZBlock parent,String id, JSONObject object) {
+        this.parent = parent;
         this.id = id;
+        this.object = object;
 
         String description = object.get("description").toString();
         ui.setTooltip(new Tooltip(description));
@@ -45,6 +58,15 @@ public class BooleanLabel implements EZBlockElement {
 
         boolean value = (boolean) object.getOrDefault("default",false);
         ui.setSelected(value);
+    }
 
+    private JSONObject object;
+
+    @Override
+    public BooleanLabel clone(EZBlock block) {
+        BooleanLabel label = new BooleanLabel(parent,id,object);
+        label.setSelected(ui.isSelected());
+        label.parent = block;
+        return label;
     }
 }

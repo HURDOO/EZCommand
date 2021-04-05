@@ -13,6 +13,19 @@ public class HoverEvent {
     private HoverActionType action = HoverActionType.NONE;
     private String contents = ""; // VALUE IN ~1.15
 
+    public HoverActionType getAction() {
+        return action;
+    }
+    public void setAction(HoverActionType action) {
+        this.action = action;
+    }
+    public String getContents() {
+        return contents;
+    }
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
     public JSONObject toJSON() {
         JSONObject object = new JSONObject();
         if(action == HoverActionType.NONE) return object;
@@ -24,5 +37,12 @@ public class HoverEvent {
         object.put("contents",contents);
 
         return object;
+    }
+
+    public HoverEvent clone() {
+        HoverEvent event = new HoverEvent();
+        event.setAction(action);
+        event.setContents(contents);
+        return event;
     }
 }

@@ -1,25 +1,29 @@
 package kr.kro.ezcommand.engine.parser;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import kr.kro.ezcommand.ui.BlockList;
+import kr.kro.ezcommand.ui.stage.MainStage;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class EZBlock extends Object {
 
     public EZBlock(String description, String parse) {
 
+        this.description = description;
         this.parse = parse;
 
         /* 기본 UI 설정*/
@@ -29,22 +33,37 @@ public class EZBlock extends Object {
 
         ui.getStylesheets().add("/src/main/resources/css/EZBlock.css");
         ui.getStylesheets().add("/css/EZBlock.css");
+        ui.getStylesheets().add("/src/main/resources/css/Font.css");
+        ui.getStylesheets().add("/css/Font.css");
+        //ui.getStyleClass().add("ezblock");
 
-        ui.getStyleClass().add("ezblock");
+        Path newPath = new Path();
+        newPath.setFill(Color.AQUA);
+        root.getChildren().add(newPath);
+        root.getChildren().add(ui);
+        ui.setLayoutX(5);
+        ui.setLayoutY(5);
+
 
         /* 마우스 드래그 설정 */
-        MousePoint.setMovable(ui);
+        MousePoint.setMovable(root);
+        Platform.runLater(() -> {
+            this.resize();
+        });
 
-        setBackgroundColor(Color.AQUA); //for test, remove later
+        //setBackgroundColor(Color.AQUA); //for test, remove later
     }
+
+    private String description;
 
     /**
      * 요소들을 가로로 나열해야 하기에 기본 Pane으로 Horizontal Box 사용.
      */
 
     private HBox ui;
-    public HBox getUi() {
-        return ui;
+    private AnchorPane root = new AnchorPane();
+    public AnchorPane getUi() {
+        return root;
     }
 
     /**
@@ -57,10 +76,12 @@ public class EZBlock extends Object {
     public HashMap<String, EZBlockElement> getElements() {
         return elements;
     }
+    private List<String> elementList = new LinkedList<>();
 
     public void addElement(EZBlockElement element) {
         /* 요소 저장 */
         elements.put(element.getId(),element);
+        elementList.add(element.getId());
 
         /* UI 저장 */
         ui.getChildren().add(element.getUI());
@@ -76,8 +97,8 @@ public class EZBlock extends Object {
         ui.setBackground(new Background(new BackgroundFill(bgColor,null,null)));
     }
 
-    public void setPinned() {
-        MousePoint.setPinned(ui);
+    public void setAsExampleBlock() {
+        MousePoint.setCloneable(this);
     }
 
     private final String parse;
@@ -119,6 +140,36 @@ public class EZBlock extends Object {
         return command.toString();
     }
 
+    public void resize() {
+        ui.autosize();
+        Platform.runLater(() -> {
+            Path path = (Path) root.getChildren().get(0);
+            path.getElements().clear();
+            double maxx = ui.getWidth(),maxy = ui.getHeight();
+            path.getElements().add(new MoveTo(0,0));
+            path.getElements().add(new LineTo(5,0));
+            path.getElements().add(new LineTo(10,3));
+            path.getElements().add(new LineTo(15,0));
+            path.getElements().add(new LineTo(maxx+10,0));
+            path.getElements().add(new LineTo(maxx+10,maxy+10));
+            path.getElements().add(new LineTo(15,maxy+10));
+            path.getElements().add(new LineTo(10,maxy+13));
+            path.getElements().add(new LineTo(5,maxy+10));
+            path.getElements().add(new LineTo(0,maxy+10));
+            path.getElements().add(new LineTo(0,0));
+        });
+    }
+
+    public EZBlock clone() throws CloneNotSupportedException {
+
+        EZBlock block = new EZBlock(description,parse);
+        for(String id : elementList) {
+            block.addElement(elements.get(id).clone(block));
+        }
+        block.setBackgroundColor(getBackgroundColor());
+
+        return block;
+    }
 }
 
 class MousePoint {
@@ -132,7 +183,7 @@ class MousePoint {
      */
 
     static double window_x,window_y,diff_x,diff_y;
-    public static void setMovable(HBox ui) {
+    public static void setMovable(Pane ui) {
         ui.setOnMousePressed(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 if(event.getButton() == MouseButton.PRIMARY)
@@ -141,12 +192,9 @@ class MousePoint {
                     ui.setMouseTransparent(true);
                     event.setDragDetect(true);
 
-                    Point mouse = MouseInfo.getPointerInfo().getLocation();
-                    Bounds bounds = ui.localToScreen(ui.getBoundsInLocal());
-                    window_x = bounds.getMinX() - ui.getLayoutX();
-                    window_y = bounds.getMinY() - ui.getLayoutY();
-                    diff_x = mouse.getX() - bounds.getMinX();
-                    diff_y = mouse.getY() - bounds.getMinY();
+                    saveCurrentMouse(ui);
+
+                    ui.requestFocus();
 
                     //System.out.printf("mouse:%f, bounds: %f, ui: %f\n", mouse.getX(), bounds.getMinX(), ui.getLayoutX());
                 }
@@ -185,12 +233,54 @@ class MousePoint {
             }
         });
     }
-    public static void setPinned(HBox ui)
-    {
-        ui.setOnMousePressed(null);
-        ui.setOnMouseReleased(null);
-        ui.setOnMouseDragged(null);
-        ui.setOnDragDetected(null);
+    public static void setCloneable(EZBlock block) {
+        Pane ui = block.getUi();
+        ui.setOnMousePressed(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                if(event.getButton() == MouseButton.PRIMARY)
+                {
+                    // clone
+
+                    EZBlock clone;
+                    try {
+                        clone = block.clone();
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                    BlockList.getUi().getChildren().set(BlockList.getUi().getChildren().indexOf(ui),clone.getUi());
+                    MainStage.backPane.getChildren().add(block.getUi());
+
+                    setMovable(block.getUi());
+                    setCloneable(clone);
+
+                    Platform.runLater(() -> {
+                        block.resize();
+                        clone.resize();
+                    });
+
+
+                    //move
+
+                    event.consume();
+                    ui.setMouseTransparent(true);
+                    event.setDragDetect(true);
+
+                    saveCurrentMouse(ui);
+
+                    ui.requestFocus();
+
+                }
+            }
+        });
+    }
+    private static void saveCurrentMouse(Pane ui) {
+        Point mouse = MouseInfo.getPointerInfo().getLocation();
+        Bounds bounds = ui.localToScreen(ui.getBoundsInLocal());
+        window_x = bounds.getMinX() - ui.getLayoutX();
+        window_y = bounds.getMinY() - ui.getLayoutY();
+        diff_x = mouse.getX() - bounds.getMinX();
+        diff_y = mouse.getY() - bounds.getMinY();
     }
 }
 
