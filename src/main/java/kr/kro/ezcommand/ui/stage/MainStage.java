@@ -45,6 +45,7 @@ public class MainStage
 
         BorderPane pane = new BorderPane();
         splitPane = new SplitPane();
+        splitPane.setDividerPosition(0,0.001);
         pane.setCenter(splitPane);
 
         BlockList.loadBlocks();

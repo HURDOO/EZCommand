@@ -24,9 +24,29 @@ public class EZTab
     public List<EZBlock> getBlocks() {
         return blocks;
     }
+
     public void addBlock(EZBlock block) {
-        blocks.add(block);
-        getUiPane().getChildren().add(block.getUi());
+        addBlock(block,null);
+    }
+    public void addBlock(EZBlock block,EZBlock parent) {
+        if(parent == null)
+            addBlock(block,blocks.size());
+        else {
+            int index = blocks.indexOf(parent);
+            addBlock(block,index);
+        }
+    }
+    public void addBlock(EZBlock block,int index) {
+        if(block == null) return;
+
+        blocks.add(index,block);
+        addBlock(block.getChildren(),index+1);
+    }
+
+    public void removeBlock(EZBlock block) {
+        if(block == null) return;
+        blocks.remove(block);
+        removeBlock(block.getChildren());
     }
 
     private Tab ui;

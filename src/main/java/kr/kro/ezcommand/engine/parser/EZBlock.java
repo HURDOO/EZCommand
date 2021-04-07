@@ -39,9 +39,8 @@ public class EZBlock extends Object {
         ui.getStylesheets().add("/css/Font.css");
         //ui.getStyleClass().add("ezblock");
 
-        Path newPath = new Path();
-        newPath.setFill(Color.AQUA);
-        root.getChildren().add(newPath);
+        path = new Path();
+        root.getChildren().add(path);
         root.getChildren().add(ui);
         ui.setLayoutX(5);
         ui.setLayoutY(5);
@@ -63,6 +62,7 @@ public class EZBlock extends Object {
      */
 
     private HBox ui;
+    private Path path;
     private AnchorPane root = new AnchorPane();
     public AnchorPane getUi() {
         return root;
@@ -152,6 +152,15 @@ public class EZBlock extends Object {
         parent = block;
     }
 
+    private EZBlock children;
+    public EZBlock getChildren() {
+        return children;
+    }
+    public void setChildren(EZBlock block) {
+        children.setParent(block);
+        children = block;
+    }
+
     public void resize() {
         ui.autosize();
         Platform.runLater(() -> {
@@ -229,8 +238,11 @@ class MousePoint {
                     }
                     else
                     {
+                        EZTab.nowTab.removeBlock(block);
+
                         ui.setLayoutX(ui.getLocalToSceneTransform().getTx());
                         ui.setLayoutY(ui.getLocalToSceneTransform().getTy());
+
                         EZTab.nowTab.getUiPane().getChildren().remove(ui);
                         MainStage.backPane.getChildren().add(ui);
                     }
@@ -257,11 +269,13 @@ class MousePoint {
                     Bounds uiBounds = ui.localToScene(ui.getLayoutBounds());
                     Bounds paneBounds = EZTab.nowTab.getUiPane().localToScene(EZTab.nowTab.getUiPane().getLayoutBounds());
                     MainStage.backPane.getChildren().remove(ui);
+
                     if(uiBounds.getMinX() >= paneBounds.getMinX()) {
                         ui.setLayoutX(uiBounds.getMinX() - paneBounds.getMinX());
                         ui.setLayoutY(uiBounds.getMinY() - paneBounds.getMinY());
 
                         EZTab.nowTab.getUiPane().getChildren().add(ui);
+                        EZTab.nowTab.addBlock(block);
                     }
                 }
             }
