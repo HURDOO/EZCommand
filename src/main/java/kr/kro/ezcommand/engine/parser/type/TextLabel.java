@@ -30,6 +30,7 @@ public class TextLabel implements EZBlockElement {
         id = cnt;
         parent = block;
         setText(text);
+        ui.getStyleClass().add("font");
     }
 
     private EZBlock parent;

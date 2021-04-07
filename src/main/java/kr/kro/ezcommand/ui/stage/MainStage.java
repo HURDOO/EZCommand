@@ -3,6 +3,7 @@ package kr.kro.ezcommand.ui.stage;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -29,6 +30,7 @@ public class MainStage
     }
 
     private static Stage stage;
+    private static SplitPane splitPane;
     public static void create() throws FileNotFoundException {
         stage = new Stage();
         try {
@@ -42,12 +44,14 @@ public class MainStage
         stage.setWidth(600);
 
         BorderPane pane = new BorderPane();
-
-        AnchorPane blockWorkspace = new AnchorPane();
-        pane.setCenter(blockWorkspace);
+        splitPane = new SplitPane();
+        pane.setCenter(splitPane);
 
         BlockList.loadBlocks();
-        pane.setLeft(BlockList.getUi());
+        splitPane.getItems().add(BlockList.getUi());
+
+        Pane blockWorkspace = new Pane();
+        splitPane.getItems().add(blockWorkspace);
 
         try {
             pane.setTop(FXMLLoader.load(MainStage.class.getResource("/fxml/MainStage_MenuBar.fxml")));
@@ -66,8 +70,13 @@ public class MainStage
         stage.setScene(scene);
         stage.show();
 
-        //ScenicView.show(scene);
+        ScenicView.show(scene);
     }
 
     public static Pane backPane = new Pane();
+    public static double getSeparatorPosition() {
+        double div = splitPane.getDividers().get(0).getPosition();
+        double width = stage.getWidth();
+        return width*div;
+    }
 }

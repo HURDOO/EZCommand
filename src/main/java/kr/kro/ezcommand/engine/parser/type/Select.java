@@ -64,7 +64,7 @@ public class Select implements EZBlockElement {
     private void resize(String value) {
         Platform.runLater(() -> {
             Text text = new Text(value);
-            text.setFont(Main.JALNAN);
+            text.setFont(Main.FONT);
             double width = text.getLayoutBounds().getWidth() * 1.5 + 25d;
             ui.setPrefWidth(width);
 

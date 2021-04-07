@@ -36,7 +36,7 @@ public class BlockList {
 
     private static void loadBlock(String url) throws IOException, ParseException {
         EZBlock block = FileParser.parse(BlockList.class.getResourceAsStream(url));
-        block.setAsExampleBlock();
+        block.setExampleBlock(true);
 
         blocks.add(block);
         ui.getChildren().add(block.getUi());
