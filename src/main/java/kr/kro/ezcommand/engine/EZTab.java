@@ -1,5 +1,7 @@
 package kr.kro.ezcommand.engine;
 
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
@@ -30,16 +32,16 @@ public class EZTab
     }
     public void addBlock(EZBlock block,EZBlock parent) {
         if(parent == null)
-            addBlock(block,blocks.size());
+            addBlock(block,blocks.size()-1);
         else {
             int index = blocks.indexOf(parent);
             addBlock(block,index);
         }
     }
-    public void addBlock(EZBlock block,int index) {
+    public void addBlock(EZBlock block,int index) { // index = index of parent
         if(block == null) return;
 
-        blocks.add(index,block);
+        blocks.add(index+1,block);
         addBlock(block.getChildren(),index+1);
     }
 
@@ -65,3 +67,4 @@ public class EZTab
         return command;
     }
 }
+

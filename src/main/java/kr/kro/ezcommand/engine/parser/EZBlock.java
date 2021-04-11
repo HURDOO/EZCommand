@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
-import javafx.scene.control.Tab;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -12,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.util.Pair;
 import kr.kro.ezcommand.engine.EZTab;
 import kr.kro.ezcommand.ui.BlockList;
 import kr.kro.ezcommand.ui.stage.MainStage;
@@ -33,21 +33,18 @@ public class EZBlock extends Object {
         ui.setAlignment(Pos.CENTER);
         setBackgroundColor(Color.TRANSPARENT);
 
-        ui.getStylesheets().add("/src/main/resources/css/EZBlock.css");
-        ui.getStylesheets().add("/css/EZBlock.css");
         ui.getStylesheets().add("/src/main/resources/css/Font.css");
         ui.getStylesheets().add("/css/Font.css");
-        //ui.getStyleClass().add("ezblock");
 
         path = new Path();
         root.getChildren().add(path);
         root.getChildren().add(ui);
-        ui.setLayoutX(5);
-        ui.setLayoutY(5);
+        ui.setLayoutX(contentDistanceX);
+        ui.setLayoutY(contentDistanceY);
 
 
         /* 마우스 드래그 설정 */
-        MousePoint.setMovable(this);
+        EZBlockUtil.setMovable(this);
         Platform.runLater(() -> {
             this.resize();
         });
@@ -149,6 +146,8 @@ public class EZBlock extends Object {
         return parent;
     }
     public void setParent(EZBlock block) {
+        if(parent != null)
+            parent.setChildren(block);
         parent = block;
     }
 
@@ -157,28 +156,47 @@ public class EZBlock extends Object {
         return children;
     }
     public void setChildren(EZBlock block) {
-        children.setParent(block);
+        if(children != null)
+            children.setParent(block);
         children = block;
     }
 
+    public static final double pathDistanceX = 5; // 0 ~ path의 꼭짓점을 향해 내려가기 시작하기까지의 거리
+    public static final double pathDistanceY = 3; // 0 ~ path의 윗쪽 꼭짓점의 가장 낮은 높이
+    public static final double contentDistanceX = 5; // anchorpane ~ hbox
+    public static final double contentDistanceY = 5; // anchorpane ~ hbox
     public void resize() {
         ui.autosize();
         Platform.runLater(() -> {
             Path path = (Path) root.getChildren().get(0);
             path.getElements().clear();
             double maxx = ui.getWidth(),maxy = ui.getHeight();
-            path.getElements().add(new MoveTo(0,0));
-            path.getElements().add(new LineTo(5,0));
-            path.getElements().add(new LineTo(10,3));
-            path.getElements().add(new LineTo(15,0));
-            path.getElements().add(new LineTo(maxx+10,0));
-            path.getElements().add(new LineTo(maxx+10,maxy+10));
-            path.getElements().add(new LineTo(15,maxy+10));
-            path.getElements().add(new LineTo(10,maxy+13));
-            path.getElements().add(new LineTo(5,maxy+10));
-            path.getElements().add(new LineTo(0,maxy+10));
-            path.getElements().add(new LineTo(0,0));
+            path.getElements().add(new MoveTo(0,0)); //0 0
+            path.getElements().add(new LineTo(pathDistanceX,0)); // 5 0
+            path.getElements().add(new LineTo(pathDistanceX*2,pathDistanceY)); // 10 3
+            path.getElements().add(new LineTo(pathDistanceX*3,0)); // 15 0
+            path.getElements().add(new LineTo(maxx+contentDistanceX*2,0)); // max+10 0
+            path.getElements().add(new LineTo(maxx+contentDistanceX*2,maxy+contentDistanceY*2)); // max+10 max+10
+            path.getElements().add(new LineTo(pathDistanceX*3,maxy+10)); // 15 max+10
+            path.getElements().add(new LineTo(pathDistanceX*2,maxy+13)); // 10 max+13
+            path.getElements().add(new LineTo(5,maxy+10)); // 5 max+10
+            path.getElements().add(new LineTo(0,maxy+10)); // 0 max+10
+            path.getElements().add(new LineTo(0,0)); // 0 0
         });
+    }
+
+    public void rearrangeFromHere() {
+        rearrange(root.getLayoutX(),root.getLayoutY());
+    }
+    private void rearrange(double x,double y) {
+        resize();
+        root.setLayoutX(x);
+        root.setLayoutY(y);
+
+        if(children != null)
+            children.rearrange(root.getLayoutX(),root.getLayoutY() + ui.getHeight() + contentDistanceY * 2);
+        else
+            setBackgroundColor(Color.RED);
     }
 
     public EZBlock clone() throws CloneNotSupportedException {
@@ -193,7 +211,7 @@ public class EZBlock extends Object {
     }
 }
 
-class MousePoint {
+class EZBlockUtil {
     /*
      * 최초 클릭 시:
      *  창 좌표 = 블록의 스크린 좌표 - 블록의 창 좌표
@@ -203,7 +221,8 @@ class MousePoint {
      *  마우스의 창 좌표 = 마우스의 스크린 좌표 - 창 좌표 - 차이
      */
 
-    static double window_x,window_y,diff_x,diff_y;
+    private static double window_x,window_y,diff_x,diff_y;
+    private static Pair<EZBlock,Boolean> nextBlock; // true = block is parent / false = block is children
     public static void setMovable(EZBlock block) {
         Pane ui = block.getUi();
 
@@ -239,6 +258,7 @@ class MousePoint {
                     else
                     {
                         EZTab.nowTab.removeBlock(block);
+                        block.setParent(null);
 
                         ui.setLayoutX(ui.getLocalToSceneTransform().getTx());
                         ui.setLayoutY(ui.getLocalToSceneTransform().getTy());
@@ -254,8 +274,6 @@ class MousePoint {
                     saveCurrentMouse(ui);
 
                     ui.requestFocus();
-
-                    //System.out.printf("mouse:%f, bounds: %f, ui: %f\n", mouse.getX(), bounds.getMinX(), ui.getLayoutX());
                 }
             }
         });
@@ -268,14 +286,38 @@ class MousePoint {
 
                     Bounds uiBounds = ui.localToScene(ui.getLayoutBounds());
                     Bounds paneBounds = EZTab.nowTab.getUiPane().localToScene(EZTab.nowTab.getUiPane().getLayoutBounds());
+                    Bounds paneScreenBounds = EZTab.nowTab.getUiPane().localToScreen(EZTab.nowTab.getUiPane().getLayoutBounds());
+                    Point mouse = MouseInfo.getPointerInfo().getLocation();
                     MainStage.backPane.getChildren().remove(ui);
 
-                    if(uiBounds.getMinX() >= paneBounds.getMinX()) {
+                    if(mouse.getX() >= paneScreenBounds.getMinX()) {
                         ui.setLayoutX(uiBounds.getMinX() - paneBounds.getMinX());
                         ui.setLayoutY(uiBounds.getMinY() - paneBounds.getMinY());
 
                         EZTab.nowTab.getUiPane().getChildren().add(ui);
-                        EZTab.nowTab.addBlock(block);
+                        if(nextBlock == null){
+                            EZTab.nowTab.addBlock(block);
+                        } else {
+                            if(nextBlock.getValue() == true) // if nextBlock is parent
+                            {
+                                block.setParent(nextBlock.getKey());
+                                nextBlock.getKey().setChildren(block);
+
+                                EZTab.nowTab.addBlock(block,nextBlock.getKey());
+                                getOldest(nextBlock.getKey()).rearrangeFromHere();
+                            }
+                            else
+                            {
+                                nextBlock.getKey().setParent(nextBlock.getKey());
+                                block.setChildren(nextBlock.getKey());
+
+                                EZTab.nowTab.addBlock(block,EZTab.nowTab.getBlocks().indexOf(nextBlock.getKey())-1);
+                                getOldest(block).rearrangeFromHere();
+                            }
+                        }
+                    }
+                    if(nextBlock != null) {
+                        nextBlock.getKey().getUi().setBorder(null);
                     }
                 }
             }
@@ -289,6 +331,24 @@ class MousePoint {
                     ui.setLayoutX(mouse.getX() - window_x - diff_x);
                     ui.setLayoutY(mouse.getY() - window_y - diff_y);
                     event.setDragDetect(false);
+
+                    if(nextBlock != null) nextBlock.getKey().getUi().setBorder(null);
+
+                    nextBlock = findNearestBlock(block); // true = return is parent / false = return is children
+                    if(nextBlock != null) {
+                        if(nextBlock.getValue() == true) // if nextBlock is parent
+                        {
+                            nextBlock.getKey().getUi().setBorder(new Border(new BorderStroke(Color.RED, Color.RED, Color.RED, Color.RED,
+                                BorderStrokeStyle.NONE, BorderStrokeStyle.NONE, BorderStrokeStyle.SOLID, BorderStrokeStyle.NONE,
+                                null, new BorderWidths(2), null)));
+                        }
+                        else // if nextBlock is children
+                        {
+                            nextBlock.getKey().getUi().setBorder(new Border(new BorderStroke(Color.BLUE, Color.RED, Color.RED, Color.RED,
+                                    BorderStrokeStyle.SOLID, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE,
+                                    null, new BorderWidths(2), null)));
+                        }
+                    }
 
                    // System.out.printf("mouse:%f, ui: %f\n", mouse.getX(), ui.getLayoutX());
                 }
@@ -312,6 +372,65 @@ class MousePoint {
         window_y = bounds.getMinY() - ui.getLayoutY();
         diff_x = mouse.getX() - bounds.getMinX();
         diff_y = mouse.getY() - bounds.getMinY();
+    }
+
+
+    /*
+     * distX = minX ~ 꼭짓점 시작하기까지의 X
+     * distY = minY ~ 위쪽 꼭짓점까지의 Y
+     *
+     * source's [minX,minY] 가 target's [minX-distX,maxY-(height/2)+1] ~ [minX+(3*distX),maxY+height] 안에 있음
+     * source's [minX,maxY-distY] 가 target's [minX-distX,minY-height] ~ [minX+(3*distX),minY+(height/2)-1] 안에 있음
+     */
+
+    private static Pair<EZBlock,Boolean> findNearestBlock(EZBlock block) {
+
+        Bounds source = block.getUi().localToScene(block.getUi().getLayoutBounds());
+        double distX = EZBlock.pathDistanceX;
+        double distY = EZBlock.pathDistanceY;
+
+        for (EZBlock nextBlock : EZTab.nowTab.getBlocks()) {
+            Bounds target = nextBlock.getUi().localToScene(nextBlock.getUi().getLayoutBounds());
+
+            double downSourceX = source.getMinX();
+            double downSourceY = source.getMinY();
+            double downTargetX1 = target.getMinX() - distX;
+            double downTargetY1 = target.getMaxY() - (target.getHeight()/2) + 1;
+            double downTargetX2 = target.getMinX() + (3 * distX);
+            double downTargetY2 = target.getMaxY() + target.getHeight();
+
+            if(downTargetX1 <= downSourceX && downSourceX <= downTargetX2
+                && downTargetY1 <= downSourceY && downSourceY <= downTargetY2)
+            {
+                return new Pair<>(nextBlock,true); // nextBlock is parent
+            }
+
+            // source's [minX,maxY-distY] 가 target's [minX-distX,minY-height] ~ [minX+(3*distX),minY+(height/2)-1] 안에 있음
+
+            double upSourceX = source.getMinX();
+            double upSourceY = source.getMaxY() - distY;
+            double upTargetX1 = target.getMinX() - distX;
+            double upTargetY1 = target.getMinY() - target.getHeight();
+            double upTargetX2 = target.getMinX() + (3 * distX);
+            double upTargetY2 = target.getMinY() + (target.getHeight()/2) - 1;
+
+            if(upTargetX1 <= upSourceX && upSourceX <= upTargetX2
+                && upTargetY1 <= upSourceY && upSourceY <= upTargetY2)
+            {
+                return new Pair<>(nextBlock,false); // nextBlock is children
+            }
+        }
+        return null;
+    }
+
+    public static EZBlock getYoungest(EZBlock block) {
+        if(block.getChildren() == null) return block;
+        return block.getChildren();
+    }
+
+    public static EZBlock getOldest(EZBlock block) {
+        if(block.getParent() == null) return block;
+        return block.getParent();
     }
 }
 

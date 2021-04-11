@@ -1,6 +1,0 @@
-.ezblock {
-    -fx-border-style: solid inside; /* 테두리 스타일 */
-    -fx-border-width:2; /* 테두리 두께 */
-    -fx-padding: 1 8; /* 내부 <-> 테두리간 공백 (세로 가로) */
-
-}

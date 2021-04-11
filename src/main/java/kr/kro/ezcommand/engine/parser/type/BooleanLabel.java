@@ -58,6 +58,8 @@ public class BooleanLabel implements EZBlockElement {
 
         boolean value = (boolean) object.getOrDefault("default",false);
         ui.setSelected(value);
+
+        ui.getStyleClass().add("font");
     }
 
     private JSONObject object;
