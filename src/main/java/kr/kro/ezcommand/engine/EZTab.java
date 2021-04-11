@@ -1,9 +1,6 @@
 package kr.kro.ezcommand.engine;
 
-import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import kr.kro.ezcommand.engine.parser.EZBlock;
 
@@ -20,35 +17,16 @@ public class EZTab
     }
 
     /**
-     * Tab에 포함되어 있는 블록들. (블록이라기엔 대부분이 함수 단위일테지만..)
+     * Tab에 포함되어 있는 그롭들.
      */
-    private List<EZBlock> blocks = new ArrayList<>();
-    public List<EZBlock> getBlocks() {
-        return blocks;
+    private List<EZGroup> groups = new ArrayList<>();
+    public List<EZGroup> getGroups() {
+        return groups;
     }
 
-    public void addBlock(EZBlock block) {
-        addBlock(block,null);
-    }
-    public void addBlock(EZBlock block,EZBlock parent) {
-        if(parent == null)
-            addBlock(block,blocks.size()-1);
-        else {
-            int index = blocks.indexOf(parent);
-            addBlock(block,index);
-        }
-    }
-    public void addBlock(EZBlock block,int index) { // index = index of parent
-        if(block == null) return;
-
-        blocks.add(index+1,block);
-        addBlock(block.getChildren(),index+1);
-    }
-
-    public void removeBlock(EZBlock block) {
-        if(block == null) return;
-        blocks.remove(block);
-        removeBlock(block.getChildren());
+    public addBlock(EZBlock block,EZBlock parent) {
+        EZGroup group = findGroupOfBlock(block);
+        group.addBlockBelow(parent,block);
     }
 
     private Tab ui;
@@ -61,10 +39,24 @@ public class EZTab
 
     public String toCommand() {
         String command = "";
-        for(EZBlock block : blocks) {
-            command += block.toCommand() + "\n";
+        for(EZGroup group : groups) {
+            command += group.toCommand() + "\n";
         }
         return command;
+    }
+
+    /**
+     * 주어진 블록이 속하여 있는 그룹을 반환합니다.
+     * 그룹을 찾지 못한 경우 null을 반환합니다.
+     * @param block
+     * @return ezGroup
+     */
+    public EZGroup findGroupOfBlock(EZBlock block) {
+        for(EZGroup group : groups) {
+            if(group.getBlocks().contains(block))
+                return group;
+        }
+        return null;
     }
 }
 

@@ -86,16 +86,6 @@ public class EZBlock extends Object {
         ui.getChildren().add(element.getUI());
     }
 
-    /**
-     * HBox의 배경색
-     */
-    public Color getBackgroundColor() {
-        return (Color) ui.getBackground().getFills().get(0).getFill();
-    }
-    public void setBackgroundColor(Color bgColor) {
-        ui.setBackground(new Background(new BackgroundFill(bgColor,null,null)));
-    }
-
     boolean isExampleBlock = false;
 
     public void setExampleBlock(boolean bool) {
@@ -189,6 +179,8 @@ public class EZBlock extends Object {
         rearrange(root.getLayoutX(),root.getLayoutY());
     }
     private void rearrange(double x,double y) {
+
+        ui.setBackground(null);
         resize();
         root.setLayoutX(x);
         root.setLayoutY(y);
@@ -196,7 +188,7 @@ public class EZBlock extends Object {
         if(children != null)
             children.rearrange(root.getLayoutX(),root.getLayoutY() + ui.getHeight() + contentDistanceY * 2);
         else
-            setBackgroundColor(Color.RED);
+            ui.setBackground(new Background(new BackgroundFill(Color.RED,null,null)));
     }
 
     public EZBlock clone() throws CloneNotSupportedException {
@@ -205,8 +197,6 @@ public class EZBlock extends Object {
         for(String id : elementList) {
             block.addElement(elements.get(id).clone(block));
         }
-        block.setBackgroundColor(getBackgroundColor());
-
         return block;
     }
 }
