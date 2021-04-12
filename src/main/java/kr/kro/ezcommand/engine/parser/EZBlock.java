@@ -17,8 +17,7 @@ import kr.kro.ezcommand.ui.BlockList;
 import kr.kro.ezcommand.ui.stage.MainStage;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
 
 public class EZBlock extends Object {
@@ -31,7 +30,6 @@ public class EZBlock extends Object {
         /* 기본 UI 설정*/
         ui = new HBox();
         ui.setAlignment(Pos.CENTER);
-        setBackgroundColor(Color.TRANSPARENT);
 
         ui.getStylesheets().add("/src/main/resources/css/Font.css");
         ui.getStylesheets().add("/css/Font.css");
@@ -135,9 +133,7 @@ public class EZBlock extends Object {
     public EZBlock getParent() {
         return parent;
     }
-    public void setParent(EZBlock block) {
-        if(parent != null)
-            parent.setChildren(block);
+    public void setParent(EZBlock block) { // caution
         parent = block;
     }
 
@@ -145,10 +141,21 @@ public class EZBlock extends Object {
     public EZBlock getChildren() {
         return children;
     }
-    public void setChildren(EZBlock block) {
+    public void setChildren(EZBlock block) { // external
+        if(block == null)
+        {
+            children = null;
+            return;
+        }
+
         if(children != null)
-            children.setParent(block);
+        {
+            EZBlock youngest = EZBlockUtil.getYoungest(block);
+            youngest.setChildren(children);
+            children.setParent(youngest);
+        }
         children = block;
+        block.setParent(this);
     }
 
     public static final double pathDistanceX = 5; // 0 ~ path의 꼭짓점을 향해 내려가기 시작하기까지의 거리
@@ -179,7 +186,6 @@ public class EZBlock extends Object {
         rearrange(root.getLayoutX(),root.getLayoutY());
     }
     private void rearrange(double x,double y) {
-
         ui.setBackground(null);
         resize();
         root.setLayoutX(x);
@@ -247,13 +253,19 @@ class EZBlockUtil {
                     }
                     else
                     {
-                        EZTab.nowTab.removeBlock(block);
-                        block.setParent(null);
+                        EZTab.nowTab.removeBlockFrom(block);
+                        if(block.getParent() != null) {
+                            block.getParent().setChildren(null);
+                            block.setParent(null);
+                        }
 
                         ui.setLayoutX(ui.getLocalToSceneTransform().getTx());
                         ui.setLayoutY(ui.getLocalToSceneTransform().getTy());
 
-                        EZTab.nowTab.getUiPane().getChildren().remove(ui);
+                        for(EZBlock block1 : getAllChildren(block))
+                        {
+                            EZTab.nowTab.getUiPane().getChildren().remove(block1.getUi());
+                        }
                         MainStage.backPane.getChildren().add(ui);
                     }
 
@@ -284,24 +296,28 @@ class EZBlockUtil {
                         ui.setLayoutX(uiBounds.getMinX() - paneBounds.getMinX());
                         ui.setLayoutY(uiBounds.getMinY() - paneBounds.getMinY());
 
-                        EZTab.nowTab.getUiPane().getChildren().add(ui);
+                        for(EZBlock block1 : getAllChildren(block))
+                        {
+                            EZTab.nowTab.getUiPane().getChildren().add(block1.getUi());
+                        }
                         if(nextBlock == null){
-                            EZTab.nowTab.addBlock(block);
+                            EZTab.nowTab.addBlock(getAllChildren(block));
+                            getOldest(block).rearrangeFromHere();
                         } else {
                             if(nextBlock.getValue() == true) // if nextBlock is parent
                             {
-                                block.setParent(nextBlock.getKey());
+                                EZTab.nowTab.addBlockBelow(nextBlock.getKey(), getAllChildren(block));
+
                                 nextBlock.getKey().setChildren(block);
 
-                                EZTab.nowTab.addBlock(block,nextBlock.getKey());
                                 getOldest(nextBlock.getKey()).rearrangeFromHere();
                             }
-                            else
+                            else // if nextblock is children
                             {
-                                nextBlock.getKey().setParent(nextBlock.getKey());
+                                EZTab.nowTab.addBlockUpon(nextBlock.getKey(), getAllChildren(block));
+
                                 block.setChildren(nextBlock.getKey());
 
-                                EZTab.nowTab.addBlock(block,EZTab.nowTab.getBlocks().indexOf(nextBlock.getKey())-1);
                                 getOldest(block).rearrangeFromHere();
                             }
                         }
@@ -421,6 +437,16 @@ class EZBlockUtil {
     public static EZBlock getOldest(EZBlock block) {
         if(block.getParent() == null) return block;
         return block.getParent();
+    }
+
+    public static EZBlock[] getAllChildren(EZBlock block) {
+        List<EZBlock> blocks = new ArrayList<>();
+
+        if(block.getChildren() != null)
+            blocks.addAll(Arrays.asList(getAllChildren(block.getChildren())));
+        blocks.add(0,block);
+
+        return blocks.toArray(new EZBlock[0]);
     }
 }
 
