@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.system.module.type="sourceSet" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/../../build/classes/java/main" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../src/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/resources" type="java-resource" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../libs/json-simple-1.1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../libs/scenicview.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Gradle: org.openjfx:javafx-fxml:14" level="project" />
+    <orderEntry type="library" name="Gradle: org.openjfx:javafx-fxml:win:14" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-core:2.11.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.fxmisc.richtext:richtextfx:0.10.6" level="project" />
+    <orderEntry type="library" name="Gradle: com.cathive.fonts:fonts-fontawesome:3.2.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:19.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.controlsfx:controlsfx:11.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.openjfx:javafx-web:win:14" level="project" />
+    <orderEntry type="library" name="Gradle: org.openjfx:javafx-media:14" level="project" />
+    <orderEntry type="library" name="Gradle: org.openjfx:javafx-media:win:14" level="project" />
+    <orderEntry type="library" name="Gradle: org.openjfx:javafx-swing:win:14" level="project" />
+    <orderEntry type="library" name="Gradle: org.openjfx:javafx-controls:14" level="project" />
+    <orderEntry type="library" name="Gradle: org.openjfx:javafx-controls:win:14" level="project" />
+    <orderEntry type="library" name="Gradle: org.openjfx:javafx-graphics:14" level="project" />
+    <orderEntry type="library" name="Gradle: org.openjfx:javafx-graphics:win:14" level="project" />
+    <orderEntry type="library" name="Gradle: org.openjfx:javafx-base:14" level="project" />
+    <orderEntry type="library" name="Gradle: org.openjfx:javafx-base:win:14" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-api:2.11.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.fxmisc.undo:undofx:2.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.fxmisc.flowless:flowless:0.6.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.reactfx:reactfx:2.0-M5" level="project" />
+    <orderEntry type="library" name="Gradle: org.fxmisc.wellbehaved:wellbehavedfx:0.3.3" level="project" />
+  </component>
+</module>

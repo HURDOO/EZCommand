@@ -8,7 +8,7 @@ plugins {
 compileJava.options.encoding = 'UTF-8'
 
 group 'kr.kro.ezcommand'
-version 'Beta-0.10'
+version 'Alpha-0.1'
 
 repositories {
     mavenCentral()
