@@ -75,6 +75,10 @@ public class EZTab
         blocks.add(index,block);
     }
 
+    public void changeBlock(EZBlock oldValue,EZBlock newValue) {
+        blocks.set(blocks.indexOf(oldValue),newValue);
+    }
+
     /**
      * 제공된 모든 블록을 삭제합니다.
      * @param severalBlocks
@@ -148,9 +152,14 @@ public class EZTab
     public String toCommand() {
         String command = "";
         for(EZBlock block : blocks) {
-            command += block.toCommand() + "\n";
+            command += getAllChildrenCommands(block) + "\n";
         }
         return command;
+    }
+
+    private String getAllChildrenCommands(EZBlock block) {
+        if(block.getChildren() == null) return block.toCommand();
+        return block.toCommand() + "\n" + getAllChildrenCommands(block.getChildren());
     }
 
 

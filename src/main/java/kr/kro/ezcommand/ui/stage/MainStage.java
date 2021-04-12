@@ -65,13 +65,14 @@ public class MainStage
         EZTab.nowTab = tab;
         blockWorkspace.getChildren().add(new TabPane(tab.getUi()));
         tab.getUiPane().setPrefSize(1000,600);
+        tab.getUi().setClosable(false);
 
         backPane.getChildren().add(pane);
         Scene scene = new Scene(backPane);
         stage.setScene(scene);
         stage.show();
 
-        ScenicView.show(scene);
+        //ScenicView.show(scene);
     }
 
     public static Pane backPane = new Pane();

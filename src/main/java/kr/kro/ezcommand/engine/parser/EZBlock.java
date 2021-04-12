@@ -12,6 +12,7 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Pair;
+import kr.kro.ezcommand.Main;
 import kr.kro.ezcommand.engine.EZTab;
 import kr.kro.ezcommand.ui.BlockList;
 import kr.kro.ezcommand.ui.stage.MainStage;
@@ -133,7 +134,35 @@ public class EZBlock extends Object {
     public EZBlock getParent() {
         return parent;
     }
-    public void setParent(EZBlock block) { // caution
+    public void setParent(EZBlock block) {
+        if(block == null) {
+            setParentOnly(null);
+            return;
+        }
+
+        /*
+            1
+            <- 4 5
+            2
+            3
+
+            1.setChildren(4)
+            4.setParent(oldest(2))
+
+            youngest(4).setChildren(2)
+            2.setParent(youngest(4))
+         */
+
+        if(parent != null) {
+            parent.setChildrenOnly(block);
+            block.setParentOnly(parent);
+        }
+        //EZBlockUtil.getYoungest(block).setChildren(this);
+        EZBlock youngest = EZBlockUtil.getYoungest(block);
+        youngest.setChildrenOnly(this);
+        setParentOnly(youngest);
+    }
+    public void setParentOnly(EZBlock block) { // caution
         parent = block;
     }
 
@@ -141,10 +170,16 @@ public class EZBlock extends Object {
     public EZBlock getChildren() {
         return children;
     }
+    public void setChildrenOnly(EZBlock block) {
+        children = block;
+    }
     public void setChildren(EZBlock block) { // external
-        if(block == null)
-        {
-            children = null;
+        if(block == null) {
+            setChildrenOnly(null);
+            return;
+        }
+        if(children != null) {
+            children.setParent(block);
             return;
         }
 
@@ -152,10 +187,10 @@ public class EZBlock extends Object {
         {
             EZBlock youngest = EZBlockUtil.getYoungest(block);
             youngest.setChildren(children);
-            children.setParent(youngest);
+            children.setParentOnly(youngest);
         }
         children = block;
-        block.setParent(this);
+        block.setParentOnly(this);
     }
 
     public static final double pathDistanceX = 5; // 0 ~ path의 꼭짓점을 향해 내려가기 시작하기까지의 거리
@@ -186,15 +221,15 @@ public class EZBlock extends Object {
         rearrange(root.getLayoutX(),root.getLayoutY());
     }
     private void rearrange(double x,double y) {
-        ui.setBackground(null);
+        //ui.setBackground(null);
         resize();
         root.setLayoutX(x);
         root.setLayoutY(y);
 
         if(children != null)
             children.rearrange(root.getLayoutX(),root.getLayoutY() + ui.getHeight() + contentDistanceY * 2);
-        else
-            ui.setBackground(new Background(new BackgroundFill(Color.RED,null,null)));
+        /*else
+            ui.setBackground(new Background(new BackgroundFill(Color.RED,null,null)));*/
     }
 
     public EZBlock clone() throws CloneNotSupportedException {
@@ -253,7 +288,7 @@ class EZBlockUtil {
                     }
                     else
                     {
-                        EZTab.nowTab.removeBlockFrom(block);
+                        EZTab.nowTab.removeBlock(block);
                         if(block.getParent() != null) {
                             block.getParent().setChildren(null);
                             block.setParent(null);
@@ -265,8 +300,10 @@ class EZBlockUtil {
                         for(EZBlock block1 : getAllChildren(block))
                         {
                             EZTab.nowTab.getUiPane().getChildren().remove(block1.getUi());
+                            MainStage.backPane.getChildren().add(block1.getUi());
                         }
-                        MainStage.backPane.getChildren().add(ui);
+                        //MainStage.backPane.getChildren().add(ui);
+                        block.rearrangeFromHere();
                     }
 
                     event.consume();
@@ -290,7 +327,11 @@ class EZBlockUtil {
                     Bounds paneBounds = EZTab.nowTab.getUiPane().localToScene(EZTab.nowTab.getUiPane().getLayoutBounds());
                     Bounds paneScreenBounds = EZTab.nowTab.getUiPane().localToScreen(EZTab.nowTab.getUiPane().getLayoutBounds());
                     Point mouse = MouseInfo.getPointerInfo().getLocation();
-                    MainStage.backPane.getChildren().remove(ui);
+                    //MainStage.backPane.getChildren().remove(ui);
+                    for(EZBlock block1 : getAllChildren(block))
+                    {
+                        MainStage.backPane.getChildren().remove(block1.getUi());
+                    }
 
                     if(mouse.getX() >= paneScreenBounds.getMinX()) {
                         ui.setLayoutX(uiBounds.getMinX() - paneBounds.getMinX());
@@ -300,24 +341,21 @@ class EZBlockUtil {
                         {
                             EZTab.nowTab.getUiPane().getChildren().add(block1.getUi());
                         }
-                        if(nextBlock == null){
-                            EZTab.nowTab.addBlock(getAllChildren(block));
+
+                        if(nextBlock == null) {
+                            EZTab.nowTab.addBlock(block);
                             getOldest(block).rearrangeFromHere();
                         } else {
                             if(nextBlock.getValue() == true) // if nextBlock is parent
                             {
-                                EZTab.nowTab.addBlockBelow(nextBlock.getKey(), getAllChildren(block));
-
                                 nextBlock.getKey().setChildren(block);
-
                                 getOldest(nextBlock.getKey()).rearrangeFromHere();
                             }
                             else // if nextblock is children
                             {
-                                EZTab.nowTab.addBlockUpon(nextBlock.getKey(), getAllChildren(block));
-
-                                block.setChildren(nextBlock.getKey());
-
+                                nextBlock.getKey().setParent(block);
+                                if(nextBlock.getKey().getParent() != null)
+                                    EZTab.nowTab.changeBlock(nextBlock.getKey(), getOldest(block));
                                 getOldest(block).rearrangeFromHere();
                             }
                         }
@@ -336,6 +374,7 @@ class EZBlockUtil {
                     Point mouse = MouseInfo.getPointerInfo().getLocation();
                     ui.setLayoutX(mouse.getX() - window_x - diff_x);
                     ui.setLayoutY(mouse.getY() - window_y - diff_y);
+                    block.rearrangeFromHere();
                     event.setDragDetect(false);
 
                     if(nextBlock != null) nextBlock.getKey().getUi().setBorder(null);
@@ -395,7 +434,11 @@ class EZBlockUtil {
         double distX = EZBlock.pathDistanceX;
         double distY = EZBlock.pathDistanceY;
 
-        for (EZBlock nextBlock : EZTab.nowTab.getBlocks()) {
+        List<EZBlock> list = new ArrayList<>();
+        for(EZBlock nextBlock : EZTab.nowTab.getBlocks()) {
+            list.addAll(Arrays.asList(getAllChildren(nextBlock)));
+        }
+        for (EZBlock nextBlock : list) {
             Bounds target = nextBlock.getUi().localToScene(nextBlock.getUi().getLayoutBounds());
 
             double downSourceX = source.getMinX();
@@ -431,12 +474,12 @@ class EZBlockUtil {
 
     public static EZBlock getYoungest(EZBlock block) {
         if(block.getChildren() == null) return block;
-        return block.getChildren();
+        return getYoungest(block.getChildren());
     }
 
     public static EZBlock getOldest(EZBlock block) {
         if(block.getParent() == null) return block;
-        return block.getParent();
+        return getOldest(block.getParent());
     }
 
     public static EZBlock[] getAllChildren(EZBlock block) {
