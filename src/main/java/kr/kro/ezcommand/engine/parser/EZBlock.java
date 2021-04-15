@@ -21,7 +21,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class EZBlock extends Object {
+public class EZBlock implements kr.kro.ezcommand.engine.parser.type.EZBlock {
 
     public EZBlock(String description, String parse) {
 

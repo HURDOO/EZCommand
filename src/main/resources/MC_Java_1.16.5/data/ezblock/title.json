@@ -1,5 +1,5 @@
 {
-  "type" : "block",
+  "type" : "ezblock",
   "description" : "제목을 표시합니다.",
 
   "content" : "%text%를 자신의 %title% 위치에 표시하기",

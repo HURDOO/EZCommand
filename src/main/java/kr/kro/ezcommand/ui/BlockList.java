@@ -3,8 +3,8 @@ package kr.kro.ezcommand.ui;
 import javafx.geometry.Insets;
 import javafx.scene.layout.VBox;
 import kr.kro.ezcommand.engine.parser.EZBlock;
-import kr.kro.ezcommand.engine.parser.FileParser;
-import kr.kro.ezcommand.ui.stage.MainStage;
+import kr.kro.ezcommand.engine.parser.file.FileLoader;
+import kr.kro.ezcommand.engine.parser.file.FileParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -21,25 +21,15 @@ public class BlockList {
         ui.setSpacing(10);
     }
 
-    private static List<EZBlock> blocks = new ArrayList<>();
-
-    public static void loadBlocks() {
-
-        try {
-            loadBlock("/files/weather.json");
-            loadBlock("/files/title.json");
-            loadBlock("/files/datapack_enable_disable.json");
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
+    private static final List<EZBlock> blocks = new ArrayList<>();
+    public static List<EZBlock> getBlocks() {
+        return blocks;
     }
 
-    private static void loadBlock(String url) throws IOException, ParseException {
-        EZBlock block = FileParser.parse(BlockList.class.getResourceAsStream(url));
+    public static void addExampleBlock(EZBlock block) {
         block.setExampleBlock(true);
 
-        blocks.add(block);
-        ui.getChildren().add(block.getUi());
+        BlockList.getBlocks().add(block);
+        BlockList.getUi().getChildren().add(block.getUi());
     }
-
 }

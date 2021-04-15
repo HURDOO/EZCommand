@@ -1,5 +1,5 @@
 {
-  "type" : "block",
+  "type" : "ezblock",
   "description" : "데이터팩을 활성화/비활성화 시킵니다.",
 
   "content" : "%name% 데이터팩 활성화: %able%",

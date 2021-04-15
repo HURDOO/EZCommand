@@ -1,27 +1,18 @@
 package kr.kro.ezcommand.ui.stage;
 
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import kr.kro.ezcommand.engine.EZTab;
-import kr.kro.ezcommand.engine.parser.EZBlock;
-import kr.kro.ezcommand.engine.parser.FileParser;
+import kr.kro.ezcommand.engine.parser.file.FileLoader;
 import kr.kro.ezcommand.ui.BlockList;
-import org.json.simple.parser.ParseException;
-import org.scenicview.ScenicView;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class MainStage
 {
@@ -48,7 +39,7 @@ public class MainStage
         splitPane.setDividerPosition(0,0.001);
         pane.setCenter(splitPane);
 
-        BlockList.loadBlocks();
+        FileLoader.loadEZPacks();
         splitPane.getItems().add(BlockList.getUi());
 
         Pane blockWorkspace = new Pane();
@@ -69,6 +60,7 @@ public class MainStage
 
         backPane.getChildren().add(pane);
         Scene scene = new Scene(backPane);
+        //scene.getStylesheets().add("/src/main/resources/css/bootstrap3.css");
         stage.setScene(scene);
         stage.show();
 

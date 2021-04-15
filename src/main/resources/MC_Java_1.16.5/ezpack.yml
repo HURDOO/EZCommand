@@ -1,0 +1,13 @@
+name: 자바 에디션 1.16.5
+version: 0.1
+description: 마인크래프트 자바 에디션 1.16.5의 바닐라 명령어입니다.
+author: 허두(hurdoo@ezcommand.kro.kr)
+
+type: ezpack
+pack-code: je-1.16.5
+api-version: Alpha-0.1
+
+dependencies:
+  ezpack:
+    - test1
+  ezplugin:

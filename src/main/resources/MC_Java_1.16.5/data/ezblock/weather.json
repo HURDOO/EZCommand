@@ -1,5 +1,5 @@
 {
-  "type" : "block",
+  "type" : "ezblock",
   "description" : "날씨를 변경합니다",
 
   "content" : "날씨를 %duration%초 동안 %weather% 하기",

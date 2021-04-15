@@ -8,7 +8,7 @@ plugins {
 compileJava.options.encoding = 'UTF-8'
 
 group 'kr.kro.ezcommand'
-version 'Alpha-0.1'
+version 'Alpha-0.2'
 
 repositories {
     mavenCentral()
@@ -27,6 +27,7 @@ dependencies {
     compile "org.openjfx:javafx-fxml:11.0.1"
     compile 'org.apache.logging.log4j:log4j-core:2.11.1'
     compile files('libs/scenicview.jar')
+    implementation 'org.yaml:snakeyaml:1.28'
 
     implementation 'org.controlsfx:controlsfx:11.1.0'
     compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.10.6'

@@ -1,4 +1,5 @@
 {
+  "type" : "nbt",
   "name" : "이름 표시",
   "parse" : "CustomNameVisible",
   "description" : "엔티티 위에 이름표를 표시할지 결정합니다.",

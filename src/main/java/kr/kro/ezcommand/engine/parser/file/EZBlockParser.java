@@ -1,36 +1,19 @@
-package kr.kro.ezcommand.engine.parser;
+package kr.kro.ezcommand.engine.parser.file;
 
+import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.type.*;
 import kr.kro.ezcommand.engine.parser.type.Number;
 import kr.kro.ezcommand.engine.parser.type.rjtf.RawJsonTextFormat;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 
-public class FileParser
-{
-    private static JSONParser parser = new JSONParser();
-
-    public static EZBlock parse(InputStream stream) throws IOException, ParseException {
-        JSONObject object = (JSONObject) parser.parse(new InputStreamReader(stream, StandardCharsets.UTF_8));
-        String type = object.get("type").toString();
-        switch(type)
-        {
-            case "block": // EZBlock
-                return parseEZBlock(object);
-            default: // nothing
-                throw new IllegalArgumentException("Illegal type!");
-        }
-    }
-
-    public static EZBlock parseEZBlock(JSONObject object)
+public class EZBlockParser {
+    public static kr.kro.ezcommand.engine.parser.EZBlock parse(JSONObject object)
     {
         String description = object.get("description").toString();
         String parse = object.get("parse").toString();
-        EZBlock ezBlock = new EZBlock(description,parse); // new object
+        kr.kro.ezcommand.engine.parser.EZBlock ezBlock = new EZBlock(description,parse); // new object
 
         char[] content = object.get("content").toString().toCharArray();
         JSONObject argList = (JSONObject) object.get("args");

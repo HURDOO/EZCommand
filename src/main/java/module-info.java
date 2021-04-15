@@ -14,6 +14,7 @@ module hellofx {
     requires fonts.fontawesome;
     requires flowless;
     requires reactfx;
+    requires org.yaml.snakeyaml;
 
     opens kr.kro.ezcommand to javafx.fxml;
     opens kr.kro.ezcommand.ui.fxml to javafx.fxml;
@@ -22,6 +23,7 @@ module hellofx {
     exports kr.kro.ezcommand.ui;
     exports kr.kro.ezcommand.ui.fxml;
     exports kr.kro.ezcommand.engine.parser.type.rjtf;
+
 
 
 

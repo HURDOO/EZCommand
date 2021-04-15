@@ -4,8 +4,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
 import kr.kro.ezcommand.engine.EZTab;
-import kr.kro.ezcommand.engine.parser.FileParser;
-import kr.kro.ezcommand.ui.stage.MainStage;
 
 import java.net.URL;
 import java.util.ResourceBundle;

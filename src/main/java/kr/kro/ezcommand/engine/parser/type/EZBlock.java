@@ -1,5 +1,8 @@
 package kr.kro.ezcommand.engine.parser.type;
 
+import kr.kro.ezcommand.engine.parser.EZBlockElement;
+
+import java.util.HashMap;
 import java.util.List;
 
 public interface EZBlock {
@@ -9,9 +12,9 @@ public interface EZBlock {
      *
      * A function that returns the Block's elements.
      *
-     * @return List of EZBlockElement
+     * @return HashMap of EZBlockElement
      */
-    public List<EZBlockElement> getElements();
+    public HashMap<String, EZBlockElement> getElements();
 
     /**
      * 이 블록의 커맨드 구문을 반환하는 함수입니다.

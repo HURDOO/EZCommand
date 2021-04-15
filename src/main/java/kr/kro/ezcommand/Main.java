@@ -3,7 +3,7 @@ package kr.kro.ezcommand;
 import javafx.application.Application;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import kr.kro.ezcommand.engine.parser.FileParser;
+import kr.kro.ezcommand.engine.parser.file.FileParser;
 import kr.kro.ezcommand.ui.stage.MainStage;
 
 public class Main extends Application
@@ -15,6 +15,9 @@ public class Main extends Application
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        EZProject.renew("Test","Alpha-0.2");
+
         System.setProperty("prism.lcdtext", "false"); // 폰트파일 로드전에 실행
         Font.loadFont(FileParser.class.getResourceAsStream("/font/Jalnan.ttf"),10);
         Font.loadFont(FileParser.class.getResourceAsStream("/font/NanumFontSetup_TTF_BARUNGOTHIC/NanumBarunGothic.ttf"),10);
