@@ -1,11 +1,11 @@
 package kr.kro.ezcommand.engine.parser.type;
 
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
+import kr.kro.ezcommand.engine.parser.EZElementContainer;
 
 import java.util.HashMap;
-import java.util.List;
 
-public interface EZBlock {
+public interface EZBlock extends EZElementContainer {
 
     /**
      * 이 블록의 요소들을 반환하는 함수입니다.

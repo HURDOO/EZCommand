@@ -1,6 +1,7 @@
 package kr.kro.ezcommand.engine.parser.file;
 
 import kr.kro.ezcommand.engine.parser.EZBlock;
+import kr.kro.ezcommand.engine.parser.EZBlockElement;
 import kr.kro.ezcommand.engine.parser.type.*;
 import kr.kro.ezcommand.engine.parser.type.Number;
 import kr.kro.ezcommand.engine.parser.type.rjtf.RawJsonTextFormat;
@@ -45,36 +46,8 @@ public class EZBlockParser {
                         이미 있는 str을 EZBlockElement로
                      */
                     JSONObject arg = (JSONObject) argList.get(str);
-                    String type = arg.get("type").toString();
-                    switch(type) {
-                        case "number":
-                            Number number = new Number(ezBlock,str,arg);
-                            ezBlock.addElement(number);
-                            break;
-                        case "select":
-                            Select select = new Select(ezBlock,str,arg);
-                            ezBlock.addElement(select);
-                            break;
-                        case "raw_json_text_format":
-                            RawJsonTextFormat rawJsonTextFormat = null;
-                            try {
-                                rawJsonTextFormat = new RawJsonTextFormat(ezBlock,str,arg);
-                                ezBlock.addElement(rawJsonTextFormat);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            break;
-                        case "string":
-                            StringLabel string = new StringLabel(ezBlock,str,arg);
-                            ezBlock.addElement(string);
-                            break;
-                        case "boolean":
-                            BooleanLabel bool = new BooleanLabel(ezBlock,str,arg);
-                            ezBlock.addElement(bool);
-                            break;
-                        default:
-                            throw new IllegalArgumentException("Illegal block type!");
-                    }
+                    EZBlockElement element = EZBlockElementParser.parse(ezBlock,str,arg);
+                    ezBlock.addElement(element);
 
                     entered = false;
                     str = "";

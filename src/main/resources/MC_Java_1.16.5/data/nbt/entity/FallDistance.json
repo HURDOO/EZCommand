@@ -2,10 +2,10 @@
   "type" : "nbt",
   "name" : "낙하 거리",
   "parse" : "FallDistance",
-  "description" : "엔티티가 낙하 중인 거리를 결정합니다.\n이 값이 클수록, 착지할 때 입는 데미지의 양이 결정됩니다.",
   "value" : {
     "type" : "number",
     "format" : "float",
+    "description" : "엔티티가 낙하 중인 거리를 결정합니다.\n이 값이 클수록, 착지할 때 입는 데미지의 양이 결정됩니다.",
     "range" : [0,"FLOAT_MAX"],
     "default" : 0.0
   }

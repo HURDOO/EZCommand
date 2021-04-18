@@ -7,6 +7,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.text.Text;
 import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
+import kr.kro.ezcommand.engine.parser.EZElementContainer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -25,11 +26,11 @@ public class Number implements EZBlockElement {
 
     private TextField ui = new TextField();
 
-    public EZBlock getEZBlock() {
+    public EZElementContainer getParent() {
         return parent;
     }
 
-    private EZBlock parent;
+    private EZElementContainer parent;
 
     private PseudoClass incorrect = PseudoClass.getPseudoClass("incorrect");
 
@@ -45,8 +46,8 @@ public class Number implements EZBlockElement {
         ui.setText(num.toString());
     }
 
-    public Number(EZBlock block,String key, JSONObject object) {
-        parent = block;
+    public Number(EZElementContainer container,String key, JSONObject object) {
+        parent = container;
         this.object = object;
 
         String description = object.get("description").toString();

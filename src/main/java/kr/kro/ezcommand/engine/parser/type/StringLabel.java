@@ -8,6 +8,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.text.Text;
 import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
+import kr.kro.ezcommand.engine.parser.EZElementContainer;
 import org.json.simple.JSONObject;
 
 public class StringLabel implements EZBlockElement {
@@ -24,9 +25,9 @@ public class StringLabel implements EZBlockElement {
         return id;
     }
 
-    private EZBlock parent;
+    private EZElementContainer parent;
     @Override
-    public EZBlock getEZBlock() {
+    public EZElementContainer getParent() {
         return parent;
     }
 
@@ -41,8 +42,8 @@ public class StringLabel implements EZBlockElement {
         ui.setText(text);
     }
 
-    public StringLabel(EZBlock block,String key, JSONObject object) {
-        this.parent = block;
+    public StringLabel(EZElementContainer element,String key, JSONObject object) {
+        this.parent = element;
         id = key;
         this.object = object;
 

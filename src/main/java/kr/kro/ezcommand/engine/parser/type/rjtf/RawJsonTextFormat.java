@@ -11,6 +11,7 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
+import kr.kro.ezcommand.engine.parser.EZElementContainer;
 import kr.kro.ezcommand.ui.fxml.RJTFTextEditorController;
 import kr.kro.ezcommand.ui.stage.RJTFStage;
 import org.controlsfx.control.PopOver;
@@ -35,9 +36,9 @@ public class RawJsonTextFormat implements EZBlockElement {
     private String id;
     private boolean useSmallQuote;
 
-    public RawJsonTextFormat(EZBlock block,String name, JSONObject object) throws IOException {
+    public RawJsonTextFormat(EZElementContainer container,String name, JSONObject object) {
         id = name;
-        parent = block;
+        parent = container;
         this.object = object;
 
         String description = object.get("description").toString();
@@ -105,21 +106,16 @@ public class RawJsonTextFormat implements EZBlockElement {
         });
     }
 
-    private EZBlock parent;
+    private EZElementContainer parent;
     @Override
-    public EZBlock getEZBlock() {
+    public EZElementContainer getParent() {
         return parent;
     }
 
     private JSONObject object;
     public RawJsonTextFormat clone(EZBlock block) {
         RawJsonTextFormat clone;
-        try {
-            clone = new RawJsonTextFormat(parent,id,object);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        clone = new RawJsonTextFormat(parent,id,object);
         clone.parent = parent;
         clone.content.clear();
         for(JsonText text : content) {

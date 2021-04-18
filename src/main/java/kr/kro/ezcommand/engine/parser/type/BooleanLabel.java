@@ -5,6 +5,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Tooltip;
 import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
+import kr.kro.ezcommand.engine.parser.EZElementContainer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -31,16 +32,16 @@ public class BooleanLabel implements EZBlockElement {
         return ui.isSelected() ? parseTrue : parseFalse;
     }
 
-    private EZBlock parent;
+    private EZElementContainer parent;
     @Override
-    public EZBlock getEZBlock() {
+    public EZElementContainer getParent() {
         return parent;
     }
 
     String parseTrue,parseFalse;
 
-    public BooleanLabel(EZBlock parent,String id, JSONObject object) {
-        this.parent = parent;
+    public BooleanLabel(EZElementContainer container,String id, JSONObject object) {
+        this.parent = container;
         this.id = id;
         this.object = object;
 

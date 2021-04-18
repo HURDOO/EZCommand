@@ -2,9 +2,9 @@
   "type" : "nbt",
   "name" : "발광",
   "parse" : "Glowing",
-  "description" : "엔티티의 테두리가 빛나게 할 지를 결정합니다. (발광 효과)",
   "value" : {
     "type" : "boolean",
+    "description" : "엔티티의 테두리가 빛나게 할 지를 결정합니다. (발광 효과)",
     "default" : false
   }
 }

@@ -10,7 +10,7 @@ public interface EZBlockElement
 
     String toCommand();
 
-    EZBlock getEZBlock();
+    EZElementContainer getParent();
 
     EZBlockElement clone(EZBlock block) throws CloneNotSupportedException;
 }

@@ -5,4 +5,4 @@ A Minecraft Command Generator with Block Coding
 <br>
 (Currently only supports Korean, we welcome English Translators :)
 <hr>
-한국어) README_KR.md
+[한국어](./README_KR.md,"한국어")

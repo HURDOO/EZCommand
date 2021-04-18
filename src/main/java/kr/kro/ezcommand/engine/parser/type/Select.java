@@ -7,6 +7,7 @@ import javafx.scene.text.Text;
 import kr.kro.ezcommand.Main;
 import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
+import kr.kro.ezcommand.engine.parser.EZElementContainer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -28,8 +29,8 @@ public class Select implements EZBlockElement {
         return parseList;
     }
 
-    private EZBlock parent;
-    public EZBlock getEZBlock() {
+    private EZElementContainer parent;
+    public EZElementContainer getParent() {
         return parent;
     }
 
@@ -37,9 +38,9 @@ public class Select implements EZBlockElement {
         ui.getSelectionModel().select(index);
     }
 
-    public Select(EZBlock block,String key, JSONObject object) {
+    public Select(EZElementContainer container,String key, JSONObject object) {
         this.object = object;
-        parent = block;
+        parent = container;
 
         String description = object.get("description").toString();
         JSONArray list1 = (JSONArray) object.get("args");

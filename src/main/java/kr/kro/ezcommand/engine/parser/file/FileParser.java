@@ -3,6 +3,7 @@ package kr.kro.ezcommand.engine.parser.file;
 import kr.kro.ezcommand.EZProject;
 import kr.kro.ezcommand.engine.javaloader.EZPack;
 import kr.kro.ezcommand.engine.parser.EZBlock;
+import kr.kro.ezcommand.engine.parser.NBT;
 import kr.kro.ezcommand.engine.parser.type.*;
 import kr.kro.ezcommand.engine.parser.type.Number;
 import kr.kro.ezcommand.engine.parser.type.rjtf.RawJsonTextFormat;
@@ -45,8 +46,11 @@ public class FileParser
             case "ezblock": // EZBlock
                 EZBlock block = EZBlockParser.parse(object);
                 BlockList.addExampleBlock(block);
-            case "entity":
+                break;
             case "nbt":
+                NBT nbt = NBTParser.parse(object);
+                break;
+            case "entity":
                 System.out.println(file.getName());
                 return;
             default: // nothing

@@ -3,6 +3,7 @@ package kr.kro.ezcommand.engine.parser.type;
 import javafx.scene.control.Label;
 import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
+import kr.kro.ezcommand.engine.parser.EZElementContainer;
 
 public class TextLabel implements EZBlockElement {
 
@@ -38,7 +39,7 @@ public class TextLabel implements EZBlockElement {
         this.parent = parent;
     }
     @Override
-    public EZBlock getEZBlock() {
+    public EZBlock getParent() {
         return parent;
     }
 
