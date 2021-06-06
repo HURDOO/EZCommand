@@ -1,1 +1,5 @@
 rootProject.name = 'EZCommand'
+include 'JE_1.16.5'
+include 'ezcommand-program'
+include 'je-1165'
+

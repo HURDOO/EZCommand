@@ -1,0 +1,15 @@
+name: 자바 에디션 1.16.5 (EZPlugin)
+main: kr.kro.hurdoo.je1165.PluginMain
+version: 0.1
+description: 마인크래프트 자바 에디션 1.16.5의 바닐라 명령어입니다.
+author: 허두(hurdoo@ezcommand.kro.kr)
+
+type: ezplugin
+plugin-code: je-1.16.5
+api-version: Alpha-0.2
+
+dependencies:
+  ezpack:
+    - test1
+  ezplugin:
+    - test2

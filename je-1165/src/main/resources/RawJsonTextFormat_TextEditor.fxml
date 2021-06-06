@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import org.fxmisc.richtext.InlineCssTextArea?>
+
+<?import javafx.scene.control.ColorPicker?>
+<?import com.cathive.fonts.fontawesome.FontAwesomeIconView?>
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.kro.hurdoo.je1165.type.rjtf.RJTFTextEditorController">
+   <top>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="bold" mnemonicParsing="false">
+               <graphic>
+                  <FontAwesomeIconView icon="ICON_BOLD" viewOrder="1.0" />
+               </graphic>
+            </Button>
+            <Button fx:id="italic" mnemonicParsing="false">
+               <graphic>
+                  <FontAwesomeIconView icon="ICON_ITALIC" viewOrder="1.0" />
+               </graphic>
+            </Button>
+            <Button fx:id="underlined" mnemonicParsing="false">
+               <graphic>
+                  <FontAwesomeIconView icon="ICON_UNDERLINE" viewOrder="1.0" />
+               </graphic>
+            </Button>
+            <Button fx:id="strikethrough" mnemonicParsing="false">
+               <graphic>
+                  <FontAwesomeIconView icon="ICON_STRIKETHROUGH" viewOrder="1.0" />
+               </graphic>
+            </Button>
+            <Button fx:id="obfuscated" layoutY="10.0" mnemonicParsing="false">
+               <graphic>
+                  <FontAwesomeIconView icon="ICON_LOCK" viewOrder="1.0" />
+               </graphic>
+            </Button>
+            <ColorPicker fx:id="color" />
+            <Button fx:id="clickEvent" mnemonicParsing="false" />
+            <Button fx:id="hoverEvent" mnemonicParsing="false" />
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <InlineCssTextArea fx:id="area" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

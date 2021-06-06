@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+group 'kr.kro.ezcommand'
+version 'Alpha-0.2'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'kr.kro.ezcommand.MainExecutor'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    exclude ('**/*.sfd')
+}
+mainClassName = "kr.kro.ezcommand.MainExecutor"
+
+test {
+    useJUnitPlatform()
+}

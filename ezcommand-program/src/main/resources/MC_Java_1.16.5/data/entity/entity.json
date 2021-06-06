@@ -1,0 +1,6 @@
+{
+  "type" : "entity",
+  "name" : "엔티티",
+  "parse" : "minecraft:entity",
+  "nbt" : ["Air","CustomName","CustomNameVisible","FallDistance","Fire","Glowing"]
+}

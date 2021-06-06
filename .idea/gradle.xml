@@ -9,6 +9,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/JE_1.16.5" />
+            <option value="$PROJECT_DIR$/ezcommand-program" />
+            <option value="$PROJECT_DIR$/je-1165" />
           </set>
         </option>
       </GradleProjectSettings>
