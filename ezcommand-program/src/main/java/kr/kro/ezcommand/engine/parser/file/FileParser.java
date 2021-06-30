@@ -1,6 +1,6 @@
 package kr.kro.ezcommand.engine.parser.file;
 
-import kr.kro.ezcommand.EZProject;
+import kr.kro.ezcommand.EZCommand;
 import kr.kro.ezcommand.engine.thirdparty.EZPack;
 import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.NBT;
@@ -32,7 +32,7 @@ public class FileParser
                 return;
             }
             EZPack pack = YAMLParser.parseEZPack(map);
-            EZProject.getPacks().add(pack);
+            EZCommand.packs.add(pack);
             return;
         }
 

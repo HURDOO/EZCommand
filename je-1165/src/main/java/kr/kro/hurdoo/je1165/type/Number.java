@@ -88,7 +88,7 @@ public class Number implements EZBlockElement {
         this.id = key;
 
         ui.setText(isDouble ? value_double.toString() : value_long.toString());
-        ui.getStylesheets().add("/src/main/resources/css/ErrorableTextField.css");
+        ui.getStylesheets().add("/css/ErrorableTextField.css");
         ui.getStyleClass().add("text");
         ui.getStyleClass().add("color");
         ui.getStyleClass().add("font");

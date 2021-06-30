@@ -3,10 +3,7 @@ package kr.kro.ezcommand.engine.thirdparty.plugin;
 import kr.kro.ezcommand.EZCommand;
 import org.apache.commons.lang3.Validate;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -14,11 +11,9 @@ import java.net.URLClassLoader;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
 
 public class EZPluginLoader {
     private static List<PreparedEZPlugin> preparedPlugins = new LinkedList<>();
@@ -82,7 +77,7 @@ public class EZPluginLoader {
                 e.printStackTrace();
             }
             EZPlugin plugin = new EZPlugin(yml.getName(),yml.getVersion(),yml.getPluginCode(),yml.getDescription(),yml.getAuthor());
-            EZCommand.EZPlugins.add(plugin);
+            EZCommand.plugins.add(plugin);
         }
     }
 }

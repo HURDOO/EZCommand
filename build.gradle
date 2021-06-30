@@ -52,6 +52,7 @@ subprojects {
 
 project(':je-1165') {
     dependencies {
+        compile project (':')
         compile project(':ezcommand-program')
     }
 }

@@ -52,7 +52,7 @@ public class StringLabel implements EZBlockElement {
         String defaultValue = object.getOrDefault("default", "string").toString();
         ui.setText(defaultValue);
 
-        ui.getStylesheets().add("/src/main/resources/css/ErrorableTextField.css");
+        ui.getStylesheets().add("/css/ErrorableTextField.css");
         ui.getStyleClass().add("text");
         ui.getStyleClass().add("font");
 

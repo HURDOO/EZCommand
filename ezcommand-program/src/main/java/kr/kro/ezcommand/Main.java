@@ -18,7 +18,7 @@ public class Main extends Application
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        EZProject.renew("Test","Alpha-0.2");
+        EZCommand.renew("Test","Alpha-0.2");
 
         System.setProperty("prism.lcdtext", "false"); // 폰트파일 로드전에 실행
         Font.loadFont(FileParser.class.getResourceAsStream("/font/Jalnan.ttf"),10);
