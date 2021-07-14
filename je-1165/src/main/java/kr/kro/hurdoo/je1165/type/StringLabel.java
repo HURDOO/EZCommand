@@ -1,5 +1,6 @@
 package kr.kro.hurdoo.je1165.type;
 
+import com.google.gson.JsonObject;
 import javafx.application.Platform;
 import javafx.css.PseudoClass;
 import javafx.scene.control.TextField;
@@ -8,7 +9,6 @@ import javafx.scene.text.Text;
 import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
 import kr.kro.ezcommand.engine.parser.EZElementContainer;
-import org.json.simple.JSONObject;
 
 public class StringLabel implements EZBlockElement {
 
@@ -41,7 +41,7 @@ public class StringLabel implements EZBlockElement {
         ui.setText(text);
     }
 
-    public StringLabel(EZElementContainer element,String key, JSONObject object) {
+    public StringLabel(EZElementContainer element,String key, JsonObject object) {
         this.parent = element;
         id = key;
         this.object = object;
@@ -49,7 +49,9 @@ public class StringLabel implements EZBlockElement {
         String description = object.get("description").toString();
         ui.setTooltip(new Tooltip(description));
 
-        String defaultValue = object.getOrDefault("default", "string").toString();
+        String defaultValue;
+        if(object.get("default") != null) defaultValue = object.get("default").getAsString();
+        else defaultValue = "string";
         ui.setText(defaultValue);
 
         ui.getStylesheets().add("/css/ErrorableTextField.css");
@@ -57,7 +59,8 @@ public class StringLabel implements EZBlockElement {
         ui.getStyleClass().add("font");
 
         boolean allowSpacing;
-        allowSpacing = (boolean) object.getOrDefault("allowSpacing", true);
+        if(object.get("allowSpacing") != null) allowSpacing = object.get("allowSpacing").getAsBoolean();
+        else allowSpacing = true;
         if(allowSpacing == false) {
             ui.getStyleClass().add("color");
             ui.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -92,7 +95,7 @@ public class StringLabel implements EZBlockElement {
         // https://stackoverflow.com/questions/12737829/javafx-textfield-resize-to-text-length
     }
 
-    private JSONObject object;
+    private JsonObject object;
 
     @Override
     public StringLabel clone(EZBlock block) {

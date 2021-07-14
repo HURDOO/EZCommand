@@ -1,8 +1,8 @@
 package kr.kro.hurdoo.je1165.type.rjtf;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import javafx.scene.paint.Color;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,56 +22,56 @@ public class JsonText {
 
     private List<JsonText> extra = new ArrayList<>();
 
-    public JSONObject toJson() {
-        JSONObject object = new JSONObject();
+    public JsonObject toJson() {
+        JsonObject object = new JsonObject();
         boolean onlyText = true;
         if (color != null && color != Color.TRANSPARENT) {
             onlyText = false;
-            object.put("color", parseHelper.colorToHex(color));
+            object.addProperty("color", parseHelper.colorToHex(color));
         }
         if (bold) {
             onlyText = false;
-            object.put("bold", true);
+            object.addProperty("bold", true);
         }
         if (italic) {
             onlyText = false;
-            object.put("italic", true);
+            object.addProperty("italic", true);
         }
         if (obfuscated) {
             onlyText = false;
-            object.put("obfuscated", true);
+            object.addProperty("obfuscated", true);
         }
         if (underlined) {
             onlyText = false;
-            object.put("underlined", true);
+            object.addProperty("underlined", true);
         }
         if (strikethrough) {
             onlyText = false;
-            object.put("strikethrough", true);
+            object.addProperty("strikethrough", true);
         }
         try {
-            object.put("clickEvent", clickEvent.toJSON());
+            object.add("clickEvent", clickEvent.toJSON());
             onlyText = false;
         } catch (NullPointerException ignored) {
         }
         try {
-            object.put("hoverEvent", hoverEvent.toJSON());
+            object.add("hoverEvent", hoverEvent.toJSON());
             onlyText = false;
         } catch (NullPointerException ignored) {
         }
         if (!extra.isEmpty()) {
             onlyText = false;
-            JSONArray array = new JSONArray();
+            JsonArray array = new JsonArray();
             for (JsonText object1 : extra) {
                 if (object1.toJsonString().startsWith("\""))
-                    array.add(object1); // Single text
+                    array.add(object1.toJsonString()); // Single text
                 else
                     array.add(object1.toJson());
             }
-            object.put("extra", array);
+            object.add("extra", array);
         }
         //if(onlyText) return text;
-        object.put("text",text);
+        object.addProperty("text",text);
         return object;
     }
 

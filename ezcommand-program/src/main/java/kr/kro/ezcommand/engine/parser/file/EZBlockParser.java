@@ -1,19 +1,19 @@
 package kr.kro.ezcommand.engine.parser.file;
 
+import com.google.gson.JsonObject;
 import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
 import kr.kro.ezcommand.engine.parser.TextLabel;
-import org.json.simple.JSONObject;
 
 public class EZBlockParser {
-    public static kr.kro.ezcommand.engine.parser.EZBlock parse(JSONObject object)
+    public static kr.kro.ezcommand.engine.parser.EZBlock parse(JsonObject object)
     {
-        String description = object.get("description").toString();
-        String parse = object.get("parse").toString();
+        String description = object.get("description").getAsString();
+        String parse = object.get("parse").getAsString();
         kr.kro.ezcommand.engine.parser.EZBlock ezBlock = new EZBlock(description,parse); // new object
 
-        char[] content = object.get("content").toString().toCharArray();
-        JSONObject argList = (JSONObject) object.get("args");
+        char[] content = object.get("content").getAsString().toCharArray();
+        JsonObject argList = object.get("args").getAsJsonObject();
         String str = "";
         boolean entered = false;
         Integer textCnt = 0;
@@ -41,7 +41,7 @@ public class EZBlockParser {
                         arg 끝
                         이미 있는 str을 EZBlockElement로
                      */
-                    JSONObject arg = (JSONObject) argList.get(str);
+                    JsonObject arg = argList.get(str).getAsJsonObject();
                     EZBlockElement element = EZBlockElementParser.parse(ezBlock,str,arg);
                     ezBlock.addElement(element);
 

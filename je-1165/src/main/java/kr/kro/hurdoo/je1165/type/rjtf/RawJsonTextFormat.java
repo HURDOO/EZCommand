@@ -1,12 +1,12 @@
 package kr.kro.hurdoo.je1165.type.rjtf;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
 import kr.kro.ezcommand.engine.parser.EZElementContainer;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,16 +23,16 @@ public class RawJsonTextFormat implements EZBlockElement {
     private String id;
     private boolean useSmallQuote;
 
-    public RawJsonTextFormat(EZElementContainer container,String name, JSONObject object) {
+    public RawJsonTextFormat(EZElementContainer container,String name, JsonObject object) {
         id = name;
         parent = container;
         this.object = object;
 
-        String description = object.get("description").toString();
-        String value = object.get("default").toString();
+        String description = object.get("description").getAsString();
+        String value = object.get("default").getAsString();
 
         try {
-            useSmallQuote = (boolean) object.get("useSmallQuote");
+            useSmallQuote = object.get("useSmallQuote").getAsBoolean();
         } catch (NullPointerException e) {
             useSmallQuote = false;
         }
@@ -70,11 +70,11 @@ public class RawJsonTextFormat implements EZBlockElement {
         if(content.size() == 1) {
             return content.get(0).toJsonString();
         }
-        JSONArray array = new JSONArray();
+        JsonArray array = new JsonArray();
         for(JsonText text : content) {
             array.add(text.toJson());
         }
-        return array.toJSONString();
+        return array.toString();
     }
 
     public void updateText() {
@@ -99,7 +99,7 @@ public class RawJsonTextFormat implements EZBlockElement {
         return parent;
     }
 
-    private JSONObject object;
+    private JsonObject object;
     public RawJsonTextFormat clone(EZBlock block) {
         RawJsonTextFormat clone;
         clone = new RawJsonTextFormat(parent,id,object);

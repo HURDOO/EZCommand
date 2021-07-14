@@ -2,7 +2,6 @@ package kr.kro.ezcommand.engine.parser.file;
 
 import kr.kro.ezcommand.engine.thirdparty.plugin.EZJavaPlugin;
 import kr.kro.ezcommand.engine.thirdparty.plugin.EZPluginLoader;
-import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -22,7 +21,7 @@ public class FileLoader {
         for(File file : list) {
             try {
                 FileParser.parse(file);
-            } catch (IOException | ParseException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

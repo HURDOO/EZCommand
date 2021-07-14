@@ -1,6 +1,6 @@
 package kr.kro.hurdoo.je1165.type.rjtf;
 
-import org.json.simple.JSONObject;
+import com.google.gson.JsonObject;
 
 public class ClickEvent {
     enum ClickActionType {
@@ -30,18 +30,18 @@ public class ClickEvent {
     }
 
 
-    public JSONObject toJSON() {
-        JSONObject object = new JSONObject();
+    public JsonObject toJSON() {
+        JsonObject object = new JsonObject();
         if(action == ClickActionType.NONE) return object;
         if(action == ClickActionType.OPEN_FILE) throw new NullPointerException("clickEvent.action: OPEN_FILE is unavailable in command.");
 
-        if(action == ClickActionType.OPEN_URL) object.put("action","open_url");
-        if(action == ClickActionType.RUN_COMMAND) object.put("action","run_command");
-        if(action == ClickActionType.CHANGE_PAGE) object.put("action","change_page");
-        if(action == ClickActionType.SUGGEST_COMMAND) object.put("action","suggest_command");
-        if(action == ClickActionType.COPY_TO_CLIPBOARD) object.put("action","copy_to_clipboard");
+        if(action == ClickActionType.OPEN_URL) object.addProperty("action","open_url");
+        if(action == ClickActionType.RUN_COMMAND) object.addProperty("action","run_command");
+        if(action == ClickActionType.CHANGE_PAGE) object.addProperty("action","change_page");
+        if(action == ClickActionType.SUGGEST_COMMAND) object.addProperty("action","suggest_command");
+        if(action == ClickActionType.COPY_TO_CLIPBOARD) object.addProperty("action","copy_to_clipboard");
 
-        object.put("value",value);
+        object.addProperty("value",value);
         return object;
     }
 

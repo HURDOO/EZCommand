@@ -1,6 +1,6 @@
 package kr.kro.hurdoo.je1165.type.rjtf;
 
-import org.json.simple.JSONObject;
+import com.google.gson.JsonObject;
 
 public class HoverEvent {
     enum HoverActionType {
@@ -26,15 +26,15 @@ public class HoverEvent {
         this.contents = contents;
     }
 
-    public JSONObject toJSON() {
-        JSONObject object = new JSONObject();
+    public JsonObject toJSON() {
+        JsonObject object = new JsonObject();
         if(action == HoverActionType.NONE) return object;
 
-        if(action == HoverActionType.SHOW_TEXT) object.put("action","show_text");
-        if(action == HoverActionType.SHOW_ITEM) object.put("action","show_item");
-        if(action == HoverActionType.SHOW_ENTITY) object.put("action","show_entity");
+        if(action == HoverActionType.SHOW_TEXT) object.addProperty("action","show_text");
+        if(action == HoverActionType.SHOW_ITEM) object.addProperty("action","show_item");
+        if(action == HoverActionType.SHOW_ENTITY) object.addProperty("action","show_entity");
 
-        object.put("contents",contents);
+        object.addProperty("contents",contents);
 
         return object;
     }

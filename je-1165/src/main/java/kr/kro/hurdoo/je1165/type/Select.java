@@ -1,5 +1,8 @@
 package kr.kro.hurdoo.je1165.type;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import javafx.application.Platform;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Tooltip;
@@ -8,9 +11,8 @@ import kr.kro.ezcommand.Main;
 import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
 import kr.kro.ezcommand.engine.parser.EZElementContainer;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Select implements EZBlockElement {
@@ -24,7 +26,7 @@ public class Select implements EZBlockElement {
         return ui;
     }
 
-    private List<String> parseList;
+    private List<String> parseList = new ArrayList<>();
     public List<String> getParseList() {
         return parseList;
     }
@@ -38,20 +40,23 @@ public class Select implements EZBlockElement {
         ui.getSelectionModel().select(index);
     }
 
-    public Select(EZElementContainer container,String key, JSONObject object) {
+    public Select(EZElementContainer container,String key, JsonObject object) {
         this.object = object;
         parent = container;
 
-        String description = object.get("description").toString();
-        JSONArray list1 = (JSONArray) object.get("args");
-        parseList = (JSONArray) object.get("parse");
-        int value = Integer.parseInt(object.get("default").toString());
+        String description = object.get("description").getAsString();;
+        JsonArray list2 = object.get("parse").getAsJsonArray();
+        for(JsonElement element : list2) {
+            parseList.add(element.getAsString());
+        }
+        JsonArray list1 = object.get("args").getAsJsonArray();
+        int value = Integer.parseInt(object.get("default").getAsString());
 
         this.id = key;
 
-        for(Object arg : list1)
+        for(JsonElement arg : list1)
         {
-            ui.getItems().add(arg.toString());
+            ui.getItems().add(arg.getAsString());
         }
         ui.getSelectionModel().select(value);
         ui.getStyleClass().add("font");
@@ -78,7 +83,7 @@ public class Select implements EZBlockElement {
         return parseList.get(ui.getSelectionModel().getSelectedIndex());
     }
 
-    private JSONObject object;
+    private JsonObject object;
 
     @Override
     public Select clone(EZBlock block) {

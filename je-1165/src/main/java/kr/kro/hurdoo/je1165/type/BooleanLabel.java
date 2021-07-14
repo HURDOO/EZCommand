@@ -1,13 +1,13 @@
 package kr.kro.hurdoo.je1165.type;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Tooltip;
 import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
 import kr.kro.ezcommand.engine.parser.EZElementContainer;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 public class BooleanLabel implements EZBlockElement {
 
@@ -40,7 +40,7 @@ public class BooleanLabel implements EZBlockElement {
 
     String parseTrue,parseFalse;
 
-    public BooleanLabel(EZElementContainer container,String id, JSONObject object) {
+    public BooleanLabel(EZElementContainer container,String id, JsonObject object) {
         this.parent = container;
         this.id = id;
         this.object = object;
@@ -49,21 +49,23 @@ public class BooleanLabel implements EZBlockElement {
         ui.setTooltip(new Tooltip(description));
 
         try {
-            JSONArray parseList = (JSONArray) object.get("parse");
-            parseTrue = parseList.get(0).toString();
-            parseFalse = parseList.get(1).toString();
+            JsonArray parseList = object.get("parse").getAsJsonArray();
+            parseTrue = parseList.get(0).getAsString();
+            parseFalse = parseList.get(1).getAsString();
         } catch (NullPointerException e) {
             parseTrue = "true";
             parseFalse = "false";
         }
 
-        boolean value = (boolean) object.getOrDefault("default",false);
+        boolean value;
+        if(object.get("default") != null) value = (boolean) object.get("default").getAsBoolean();
+        else value = false;
         ui.setSelected(value);
 
         ui.getStyleClass().add("font");
     }
 
-    private JSONObject object;
+    private JsonObject object;
 
     @Override
     public BooleanLabel clone(EZBlock block) {

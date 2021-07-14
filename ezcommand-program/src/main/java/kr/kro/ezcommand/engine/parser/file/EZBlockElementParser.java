@@ -1,22 +1,22 @@
 package kr.kro.ezcommand.engine.parser.file;
 
+import com.google.gson.JsonObject;
 import kr.kro.ezcommand.EZCommand;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
 import kr.kro.ezcommand.engine.parser.EZElementContainer;
-import org.json.simple.JSONObject;
 
 import java.lang.reflect.InvocationTargetException;
 
 public class EZBlockElementParser {
-    public static EZBlockElement parse(EZElementContainer parent, String str, JSONObject arg) {
+    public static EZBlockElement parse(EZElementContainer parent, String str, JsonObject arg) {
         assert arg.get("type") != null;
-        String type = arg.get("type").toString();
+        String type = arg.get("type").getAsString();
         Class<? extends EZBlockElement> elementClass = EZCommand.EZBlockElements.get(type).asSubclass(EZBlockElement.class);
 
         EZBlockElement element;
         try {
             element = elementClass
-                    .getConstructor(EZElementContainer.class,String.class,JSONObject.class)
+                    .getConstructor(EZElementContainer.class,String.class,JsonObject.class)
                     .newInstance(parent,str,arg);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();

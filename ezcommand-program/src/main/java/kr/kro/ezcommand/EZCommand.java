@@ -2,6 +2,8 @@ package kr.kro.ezcommand;
 
 import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
+import kr.kro.ezcommand.engine.parser.file.EZData;
+import kr.kro.ezcommand.engine.parser.file.EZDataParser;
 import kr.kro.ezcommand.engine.thirdparty.EZPack;
 import kr.kro.ezcommand.engine.thirdparty.plugin.EZJavaPlugin;
 import kr.kro.ezcommand.engine.thirdparty.plugin.EZPlugin;
@@ -22,6 +24,8 @@ public class EZCommand {
 
     public static List<EZPlugin> plugins = new ArrayList<>();
     public static List<EZPack> packs = new ArrayList<>();
+    public static HashMap<String, Class<? extends EZData>> datas = new HashMap<>();
+    public static HashMap<String, EZDataParser> dataParsers = new HashMap<>();
 
     public static void renew(String name, String version) {
         EZCommand.name = name;

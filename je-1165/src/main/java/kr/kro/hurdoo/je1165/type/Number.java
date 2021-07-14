@@ -1,5 +1,7 @@
 package kr.kro.hurdoo.je1165.type;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import javafx.application.Platform;
 import javafx.css.PseudoClass;
 import javafx.scene.control.TextField;
@@ -8,8 +10,6 @@ import javafx.scene.text.Text;
 import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
 import kr.kro.ezcommand.engine.parser.EZElementContainer;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 public class Number implements EZBlockElement {
     public java.lang.String getId() {
@@ -46,16 +46,16 @@ public class Number implements EZBlockElement {
         ui.setText(num.toString());
     }
 
-    public Number(EZElementContainer container,String key, JSONObject object) {
+    public Number(EZElementContainer container,String key, JsonObject object) {
         parent = container;
         this.object = object;
 
-        String description = object.get("description").toString();
-        JSONArray numList = (JSONArray) object.get("range");
-        String min = parseMinMax(numList.get(0).toString());
-        String max = parseMinMax(numList.get(1).toString());
+        String description = object.get("description").getAsString();
+        JsonArray numList = object.get("range").getAsJsonArray();
+        String min = parseMinMax(numList.get(0).getAsString());
+        String max = parseMinMax(numList.get(1).getAsString());
 
-        switch (object.get("format").toString())
+        switch (object.get("format").getAsString())
         {
             case "byte":
             case "short":
@@ -202,7 +202,7 @@ public class Number implements EZBlockElement {
         return s;
     }
 
-    private JSONObject object;
+    private JsonObject object;
 
     @Override
     public Number clone(EZBlock block) {

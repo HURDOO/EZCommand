@@ -1,8 +1,7 @@
 package kr.kro.ezcommand;
 
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -22,7 +21,7 @@ public class MainExecutor {
             while(src.hasNext())
                 builder.append(src.next());
             System.out.println(builder.);*/
-            JSONArray array = (JSONArray) new JSONParser().parse(reader);
+            JsonArray array = new Gson().fromJson(reader,JsonArray.class);
             boolean skip = false;
             for(int i=0;i< array.size();i++)
             {
@@ -31,7 +30,7 @@ public class MainExecutor {
                     skip = false;
                     continue;
                 }
-                String str = array.get(i).toString();
+                String str = array.get(i).getAsString();
                 if(i%2==0) // key
                 {
                     if(str.contains("banner") && !str.contains("banner\""))
@@ -46,7 +45,7 @@ public class MainExecutor {
                     System.out.println(str + "\n");
                 }
             }
-        } catch (IOException | ParseException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

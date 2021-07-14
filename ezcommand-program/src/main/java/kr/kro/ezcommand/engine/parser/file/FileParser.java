@@ -1,13 +1,12 @@
 package kr.kro.ezcommand.engine.parser.file;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import kr.kro.ezcommand.EZCommand;
 import kr.kro.ezcommand.engine.thirdparty.EZPack;
 import kr.kro.ezcommand.engine.parser.EZBlock;
-import kr.kro.ezcommand.engine.parser.NBT;
 import kr.kro.ezcommand.ui.BlockList;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
@@ -16,9 +15,9 @@ import java.util.Map;
 
 public class FileParser
 {
-    private static JSONParser parser = new JSONParser();
+    private static Gson gson = new Gson();
 
-    public static void parse(File file) throws IOException, ParseException {
+    public static void parse(File file) throws IOException{
 
         // YAML
         if(file.getName().equals("ezpack.yml")) {
@@ -36,22 +35,29 @@ public class FileParser
             return;
         }
 
-        JSONObject object = (JSONObject) parser.parse(new FileReader(file,StandardCharsets.UTF_8));
-        String type = object.get("type").toString();
+        JsonObject object = gson.fromJson(new FileReader(file,StandardCharsets.UTF_8),JsonObject.class);
+
+        String type = object.get("type").getAsString();
         switch(type)
         {
             case "ezblock": // EZBlock
                 EZBlock block = EZBlockParser.parse(object);
                 BlockList.addExampleBlock(block);
                 break;
-            case "nbt":
+            /*case "nbt":
                 NBT nbt = NBTParser.parse(object);
-                break;
+                break;*/
             case "entity":
                 System.out.println(file.getName());
                 return;
             default: // nothing
-                throw new IllegalArgumentException("Illegal type!");
+                if(!EZCommand.datas.containsKey(type)) throw new IllegalArgumentException("Illegal type!");
+                Class<? extends EZData> dataClass = EZCommand.datas.get(type);
+                EZDataParser parser = EZCommand.dataParsers.get(type);
+
+                EZData data = parser.parse(object);
+                if(data.getClass() != dataClass)
+                    throw new UnsupportedOperationException(data.getClass().getName() + " is not " + dataClass.getName());
         }
 
     }
