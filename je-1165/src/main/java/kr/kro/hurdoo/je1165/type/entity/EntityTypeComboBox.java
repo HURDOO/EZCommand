@@ -41,12 +41,7 @@ public class EntityTypeComboBox implements EZBlockElement {
     }
 
     @Override
-    public EZElementContainer getParent() {
-        return null;
-    }
-
-    @Override
-    public EZBlockElement clone(EZBlock block) throws CloneNotSupportedException {
-        return null;
+    public EZBlockElement clone() throws CloneNotSupportedException {
+        return new EntityTypeComboBox();
     }
 }

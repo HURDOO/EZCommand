@@ -10,7 +10,7 @@ public interface EZBlockElement extends EZData {
 
     String toCommand();
 
-    EZElementContainer getParent();
+    //EZElementContainer getParent();
 
-    EZBlockElement clone(EZBlock block) throws CloneNotSupportedException;
+    EZBlockElement clone() throws CloneNotSupportedException;
 }

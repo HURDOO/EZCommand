@@ -31,18 +31,12 @@ public class Select implements EZBlockElement {
         return parseList;
     }
 
-    private EZElementContainer parent;
-    public EZElementContainer getParent() {
-        return parent;
-    }
-
     public void select(int index) {
         ui.getSelectionModel().select(index);
     }
 
-    public Select(EZElementContainer container,String key, JsonObject object) {
+    public Select(String key, JsonObject object) {
         this.object = object;
-        parent = container;
 
         String description = object.get("description").getAsString();;
         JsonArray list2 = object.get("parse").getAsJsonArray();
@@ -73,8 +67,6 @@ public class Select implements EZBlockElement {
             text.setFont(Main.FONT);
             double width = text.getLayoutBounds().getWidth() * 1.5 + 25d;
             ui.setPrefWidth(width);
-
-            parent.resize();
         });
     }
 
@@ -86,9 +78,8 @@ public class Select implements EZBlockElement {
     private JsonObject object;
 
     @Override
-    public Select clone(EZBlock block) {
-        Select select = new Select(parent,id,object);
-        select.parent = block;
+    public Select clone() {
+        Select select = new Select(id,object);
         select.select(ui.getSelectionModel().getSelectedIndex());
         return select;
     }

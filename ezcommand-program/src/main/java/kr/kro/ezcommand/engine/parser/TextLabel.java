@@ -24,27 +24,15 @@ public class TextLabel implements EZBlockElement {
         ui.setText(text);
     }
 
-    public TextLabel(EZBlock block,int cnt,String text) {
+    public TextLabel(int cnt,String text) {
         id = cnt;
-        parent = block;
         setText(text);
         ui.getStyleClass().add("font");
     }
 
-    private EZBlock parent;
-    public void setEZBlock(EZBlock parent) {
-        this.parent = parent;
-    }
     @Override
-    public EZBlock getParent() {
-        return parent;
-    }
-
-    @Override
-    public TextLabel clone(EZBlock block) throws CloneNotSupportedException {
-        TextLabel label = new TextLabel(parent,id,ui.getText());
-        label.parent = block;
-        label.setEZBlock(parent);
+    public TextLabel clone() throws CloneNotSupportedException {
+        TextLabel label = new TextLabel(id,ui.getText());
         return label;
     }
 }

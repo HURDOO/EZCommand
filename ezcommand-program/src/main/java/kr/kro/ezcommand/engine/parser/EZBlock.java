@@ -1,6 +1,7 @@
 package kr.kro.ezcommand.engine.parser;
 
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
@@ -82,6 +83,11 @@ public class EZBlock implements EZBlockTemplate {
 
         /* UI 저장 */
         ui.getChildren().add(element.getUI());
+
+        /* resize */
+        element.getUI().getProperties().addListener((InvalidationListener) change -> {
+            resize();
+        });
     }
 
     boolean isExampleBlock = false;
@@ -235,7 +241,7 @@ public class EZBlock implements EZBlockTemplate {
 
         EZBlock block = new EZBlock(description,parse);
         for(String id : elementList) {
-            block.addElement(elements.get(id).clone(block));
+            block.addElement(elements.get(id).clone());
         }
         return block;
     }

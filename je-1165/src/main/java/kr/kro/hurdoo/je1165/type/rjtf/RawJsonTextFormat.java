@@ -23,9 +23,8 @@ public class RawJsonTextFormat implements EZBlockElement {
     private String id;
     private boolean useSmallQuote;
 
-    public RawJsonTextFormat(EZElementContainer container,String name, JsonObject object) {
+    public RawJsonTextFormat(String name, JsonObject object) {
         id = name;
-        parent = container;
         this.object = object;
 
         String description = object.get("description").getAsString();
@@ -88,22 +87,12 @@ public class RawJsonTextFormat implements EZBlockElement {
             builder.append("...");
         }
         ui.setText(builder.toString());
-        Platform.runLater(() -> {
-            parent.resize();
-        });
+        // resize
     }
-
-    private EZElementContainer parent;
-    @Override
-    public EZElementContainer getParent() {
-        return parent;
-    }
-
     private JsonObject object;
-    public RawJsonTextFormat clone(EZBlock block) {
+    public RawJsonTextFormat clone() {
         RawJsonTextFormat clone;
-        clone = new RawJsonTextFormat(parent,id,object);
-        clone.parent = parent;
+        clone = new RawJsonTextFormat(id,object);
         clone.content.clear();
         for(JsonText text : content) {
             clone.content.add(text.clone());

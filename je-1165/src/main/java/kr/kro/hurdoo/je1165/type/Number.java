@@ -26,12 +26,6 @@ public class Number implements EZBlockElement {
 
     private TextField ui = new TextField();
 
-    public EZElementContainer getParent() {
-        return parent;
-    }
-
-    private EZElementContainer parent;
-
     private PseudoClass incorrect = PseudoClass.getPseudoClass("incorrect");
 
     private Long min_long, max_long, value_long;
@@ -46,8 +40,7 @@ public class Number implements EZBlockElement {
         ui.setText(num.toString());
     }
 
-    public Number(EZElementContainer container,String key, JsonObject object) {
-        parent = container;
+    public Number(String key, JsonObject object) {
         this.object = object;
 
         String description = object.get("description").getAsString();
@@ -117,9 +110,7 @@ public class Number implements EZBlockElement {
                     + ui.getPadding().getLeft() + ui.getPadding().getRight() // Add the padding of the TextField
                     + 2d; // Add some spacing
             ui.setPrefWidth(width); // Set the width
-            ui.positionCaret(ui.getCaretPosition()); // If you remove this line, it flashes a little bit
-
-            parent.resize();
+            ui.positionCaret(ui.getCaretPosition()); // If you remove this line, it flashes a little bit\
         });
 
 
@@ -205,9 +196,8 @@ public class Number implements EZBlockElement {
     private JsonObject object;
 
     @Override
-    public Number clone(EZBlock block) {
-        Number number = new Number(parent,id,object);
-        number.parent = block;
+    public Number clone() {
+        Number number = new Number(id,object);
 
         if(value_long == null) number.setValue(value_double);
         else if(value_double == null) number.setValue(value_long);

@@ -18,8 +18,8 @@ public class EZBlockElementParser //implements EZDataParser
         EZBlockElement element;
         try {
             element = elementClass
-                    .getConstructor(EZElementContainer.class,String.class,JsonObject.class)
-                    .newInstance(parent,str,arg);
+                    .getConstructor(String.class,JsonObject.class)
+                    .newInstance(str,arg);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
             return null;

@@ -23,13 +23,6 @@ public class StringLabel implements EZBlockElement {
     public String getId() {
         return id;
     }
-
-    private EZElementContainer parent;
-    @Override
-    public EZElementContainer getParent() {
-        return parent;
-    }
-
     @Override
     public String toCommand() {
         return ui.textProperty().getValue();
@@ -41,8 +34,7 @@ public class StringLabel implements EZBlockElement {
         ui.setText(text);
     }
 
-    public StringLabel(EZElementContainer element,String key, JsonObject object) {
-        this.parent = element;
+    public StringLabel(String key, JsonObject object) {
         id = key;
         this.object = object;
 
@@ -88,8 +80,6 @@ public class StringLabel implements EZBlockElement {
                     + 2d; // Add some spacing
             ui.setPrefWidth(width); // Set the width
             ui.positionCaret(ui.getCaretPosition()); // If you remove this line, it flashes a little bit
-
-            parent.resize();
         });
 
         // https://stackoverflow.com/questions/12737829/javafx-textfield-resize-to-text-length
@@ -98,9 +88,8 @@ public class StringLabel implements EZBlockElement {
     private JsonObject object;
 
     @Override
-    public StringLabel clone(EZBlock block) {
-        StringLabel label = new StringLabel(parent,id,object);
-        label.parent = block;
+    public StringLabel clone() {
+        StringLabel label = new StringLabel(id,object);
         label.setText(ui.getText());
         return label;
     }

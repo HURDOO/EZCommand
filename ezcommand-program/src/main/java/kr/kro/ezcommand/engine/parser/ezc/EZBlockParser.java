@@ -29,7 +29,7 @@ public class EZBlockParser {
                         arg 시작
                         이미 있는 str은 TextLabel로
                      */
-                    TextLabel label = new TextLabel(ezBlock,textCnt,str);
+                    TextLabel label = new TextLabel(textCnt,str);
                     ezBlock.addElement(label);
                     textCnt++;
 
@@ -52,7 +52,7 @@ public class EZBlockParser {
         }
         if(str != "") {
             // 맨 마지막이 TextLabel이어서 %로 끝나지 않았을 경우
-            TextLabel label = new TextLabel(ezBlock,textCnt,str);
+            TextLabel label = new TextLabel(textCnt,str);
             ezBlock.addElement(label);
             textCnt++;
         }

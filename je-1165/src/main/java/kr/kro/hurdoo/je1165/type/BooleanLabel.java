@@ -32,16 +32,9 @@ public class BooleanLabel implements EZBlockElement {
         return ui.isSelected() ? parseTrue : parseFalse;
     }
 
-    private EZElementContainer parent;
-    @Override
-    public EZElementContainer getParent() {
-        return parent;
-    }
-
     String parseTrue,parseFalse;
 
-    public BooleanLabel(EZElementContainer container,String id, JsonObject object) {
-        this.parent = container;
+    public BooleanLabel(String id, JsonObject object) {
         this.id = id;
         this.object = object;
 
@@ -68,10 +61,9 @@ public class BooleanLabel implements EZBlockElement {
     private JsonObject object;
 
     @Override
-    public BooleanLabel clone(EZBlock block) {
-        BooleanLabel label = new BooleanLabel(parent,id,object);
+    public BooleanLabel clone() {
+        BooleanLabel label = new BooleanLabel(id,object);
         label.setSelected(ui.isSelected());
-        label.parent = block;
         return label;
     }
 }
