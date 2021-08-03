@@ -1,9 +1,9 @@
 package kr.kro.ezcommand.engine.parser;
 
 import javafx.scene.Node;
+import kr.kro.ezcommand.engine.parser.file.EZData;
 
-public interface EZBlockElement
-{
+public interface EZBlockElement extends EZData {
     Node getUI();
 
     String getId();

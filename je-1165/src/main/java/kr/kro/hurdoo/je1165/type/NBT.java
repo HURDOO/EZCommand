@@ -5,7 +5,7 @@ import kr.kro.ezcommand.engine.parser.EZBlockElement;
 import kr.kro.ezcommand.engine.parser.EZElementContainer;
 import kr.kro.ezcommand.engine.parser.file.EZData;
 
-public class NBT extends EZData implements EZElementContainer {
+public class NBT implements EZData, EZElementContainer {
     private EZBlockElement value;
     public void setValue(EZBlockElement element) {
         value = element;

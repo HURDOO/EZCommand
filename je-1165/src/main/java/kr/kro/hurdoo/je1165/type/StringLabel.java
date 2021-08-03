@@ -46,7 +46,7 @@ public class StringLabel implements EZBlockElement {
         id = key;
         this.object = object;
 
-        String description = object.get("description").toString();
+        String description = object.get("description").getAsString();
         ui.setTooltip(new Tooltip(description));
 
         String defaultValue;

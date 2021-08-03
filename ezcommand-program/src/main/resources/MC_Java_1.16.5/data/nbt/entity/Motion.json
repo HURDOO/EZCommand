@@ -1,0 +1,11 @@
+{
+  "@TODO" : "add Double[]",
+  "type" : "nbt",
+  "name" : "무적",
+  "parse" : "Invulnerable",
+  "value" : {
+    "type" : "boolean",
+    "description" : "엔티티를 무적으로 만듭니다. (크리에이티브 모드에서만 공격 가능)",
+    "default" : false
+  }
+}

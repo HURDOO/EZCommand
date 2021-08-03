@@ -19,9 +19,16 @@ public class MainStage
     public static Stage getStage() {
         return stage;
     }
+    public static VBox getBlockList() {
+        return BlockList.getUi();
+    }
+    public static Pane getBlockWorkspace() {
+        return blockWorkspace;
+    }
 
     private static Stage stage;
     private static SplitPane splitPane;
+    private static Pane blockWorkspace;
     public static void create() throws FileNotFoundException {
         stage = new Stage();
         try {
@@ -43,7 +50,7 @@ public class MainStage
         FileLoader.loadEZPacks();
         splitPane.getItems().add(BlockList.getUi());
 
-        Pane blockWorkspace = new Pane();
+        /*Pane*/ blockWorkspace = new Pane();
         splitPane.getItems().add(blockWorkspace);
 
         try {
