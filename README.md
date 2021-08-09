@@ -1,4 +1,4 @@
-> ***모두의 커맨드가 EZ해지는 그날까지! :D***
+> ***The EZest Minecraft Command Ever! :D***
 
 EZCommand
 =========
