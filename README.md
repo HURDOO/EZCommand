@@ -1,3 +1,5 @@
+> ***모두의 커맨드가 EZ해지는 그날까지! :D***
+
 EZCommand
 =========
 A Minecraft Command Generator with Block Coding
