@@ -6,19 +6,17 @@ import javafx.css.PseudoClass;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.text.Text;
-import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
-import kr.kro.ezcommand.engine.parser.EZElementContainer;
 
 public class StringLabel implements EZBlockElement {
 
-    private TextField ui = new TextField();
+    private final TextField ui = new TextField();
     @Override
     public TextField getUI() {
         return ui;
     }
 
-    private String id;
+    private final String id;
     @Override
     public String getId() {
         return id;
@@ -28,7 +26,7 @@ public class StringLabel implements EZBlockElement {
         return ui.textProperty().getValue();
     }
 
-    private PseudoClass incorrect = PseudoClass.getPseudoClass("incorrect");
+    private final PseudoClass incorrect = PseudoClass.getPseudoClass("incorrect");
 
     public void setText(String text) {
         ui.setText(text);
@@ -53,7 +51,7 @@ public class StringLabel implements EZBlockElement {
         boolean allowSpacing;
         if(object.get("allowSpacing") != null) allowSpacing = object.get("allowSpacing").getAsBoolean();
         else allowSpacing = true;
-        if(allowSpacing == false) {
+        if(!allowSpacing) {
             ui.getStyleClass().add("color");
             ui.textProperty().addListener((observable, oldValue, newValue) -> {
                 ui.pseudoClassStateChanged(incorrect, newValue.isBlank() || newValue.contains(" "));
@@ -85,7 +83,7 @@ public class StringLabel implements EZBlockElement {
         // https://stackoverflow.com/questions/12737829/javafx-textfield-resize-to-text-length
     }
 
-    private JsonObject object;
+    private final JsonObject object;
 
     @Override
     public StringLabel clone() {

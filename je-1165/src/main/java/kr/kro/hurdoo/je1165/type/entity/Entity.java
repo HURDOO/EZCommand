@@ -1,25 +1,23 @@
 package kr.kro.hurdoo.je1165.type.entity;
 
+import kr.kro.ezcommand.engine.parser.file.EZData;
 import kr.kro.hurdoo.je1165.type.NBT;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-public class Entity
+public class Entity implements EZData
 {
-    public static final List<Entity> entities = new LinkedList<>();
+    public static final List<Entity> entities = new ArrayList<>();
 
-    private List<NBT> nbt = new ArrayList<>();
+    private final List<NBT> nbt = new ArrayList<>();
     private final String name;
     private final String parse;
     private final Entity parent;
 
     private final boolean isRealEntity;
     private final File image;
-
-    private final EntityNode ui;
 
     public Entity(String name,String parse,List<NBT> nbts, boolean isRealEntity, Entity parent, String imageLoc)
     {
@@ -30,10 +28,12 @@ public class Entity
         nbt.addAll(nbts);
         this.parent = parent;
         this.isRealEntity = isRealEntity;
-        File file = new File(imageLoc);
-        if(!file.exists() || !file.isFile()) image = null;
-        else image = file;
-        ui = new EntityNode(this);
+        if(imageLoc != null) {
+            File file = new File(imageLoc);
+            if (file.exists() && file.isFile()) image = file;
+            else image = null;
+        }
+        else image = null;
     }
 
     public File getImage() {
@@ -43,10 +43,14 @@ public class Entity
         return name;
     }
     public EntityNode getUi() {
-        return ui;
+        return new EntityNode(this);
     }
     public boolean isRealEntity() {
         return isRealEntity;
     }
 
+    @Override
+    public String toCommand() {
+        return parse;
+    }
 }

@@ -4,7 +4,7 @@ buildscript {
 
 plugins {
     id 'java'
-    id 'org.openjfx.javafxplugin' version '0.0.8' apply false
+    id 'org.openjfx.javafxplugin' version '0.0.10' apply false
     //id 'org.beryx.jlink' version '2.12.0'
     id 'application'
 }
@@ -33,18 +33,17 @@ subprojects {
 
         implementation 'org.jetbrains:annotations:19.0.0'
         // testCompile group: 'junit', name: 'junit', version: '4.12'
-        testImplementation ('junit:junit:4.12') {
-            exclude group: 'org.hamcrest'
-        }
-        compile "org.openjfx:javafx-fxml:11.0.1"
+        testImplementation ('junit:junit:4.12')
+        //compile "org.openjfx:javafx-fxml:11.0.1"
         compile 'org.apache.logging.log4j:log4j-core:2.11.1'
         compile files('../libs/scenicview.jar')
         implementation 'org.yaml:snakeyaml:1.28'
+        implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
         implementation 'org.controlsfx:controlsfx:11.1.0'
         compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.10.6'
         compile 'com.cathive.fonts:fonts-fontawesome:3.2.1.0'
-        implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+        implementation 'io.github.palexdev:materialfx:11.12.0'
     }
     javafx {
         version =  "14"

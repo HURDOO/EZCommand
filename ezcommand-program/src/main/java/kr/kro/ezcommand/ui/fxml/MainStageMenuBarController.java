@@ -14,8 +14,6 @@ public class MainStageMenuBarController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        button_toCommand.setOnAction(event -> {
-            System.out.println(EZTab.nowTab.toCommand());
-        });
+        button_toCommand.setOnAction(event -> System.out.println(EZTab.nowTab.toCommand()));
     }
 }

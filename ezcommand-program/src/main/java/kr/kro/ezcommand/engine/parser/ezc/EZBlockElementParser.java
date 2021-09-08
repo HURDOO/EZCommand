@@ -3,14 +3,12 @@ package kr.kro.ezcommand.engine.parser.ezc;
 import com.google.gson.JsonObject;
 import kr.kro.ezcommand.EZCommand;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
-import kr.kro.ezcommand.engine.parser.EZElementContainer;
-import kr.kro.ezcommand.engine.parser.file.EZDataParser;
 
 import java.lang.reflect.InvocationTargetException;
 
 public class EZBlockElementParser //implements EZDataParser
 {
-    public static EZBlockElement parse(EZElementContainer parent, String str, JsonObject arg) {
+    public static EZBlockElement parse(String str, JsonObject arg) {
         assert arg.get("type") != null;
         String type = arg.get("type").getAsString();
         Class<? extends EZBlockElement> elementClass = EZCommand.EZBlockElements.get(type).asSubclass(EZBlockElement.class);

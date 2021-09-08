@@ -10,12 +10,12 @@ import kr.kro.ezcommand.ui.stage.MainStage;
 import java.io.IOException;
 
 public class RJTFStage {
-    private static Stage stage = new Stage();
+    private static final Stage stage = new Stage();
 
     public static RJTFTextEditorController getController() {
         return controller;
     }
-    private static RJTFTextEditorController controller;
+    private static final RJTFTextEditorController controller;
 
     static {
         FXMLLoader loader = new FXMLLoader(RawJsonTextFormat.class.getResource("/RawJsonTextFormat_TextEditor.fxml"));
@@ -25,6 +25,7 @@ public class RJTFStage {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        assert pane != null;
         stage.setScene(new Scene(pane));
         controller = loader.getController();
 

@@ -41,7 +41,7 @@ public class ClickEvent {
         if(action == ClickActionType.SUGGEST_COMMAND) object.addProperty("action","suggest_command");
         if(action == ClickActionType.COPY_TO_CLIPBOARD) object.addProperty("action","copy_to_clipboard");
 
-        object.addProperty("value",value);
+        object.addProperty("value", value);
         return object;
     }
 

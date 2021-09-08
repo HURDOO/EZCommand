@@ -2,16 +2,14 @@ package kr.kro.ezcommand.engine.thirdparty.plugin;
 
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Map;
 
 public class EZPluginYMLParser {
 
-    public static EZPluginYML parse(InputStream input)
-    {
+    public static EZPlugin parse(InputStream input) throws FileNotFoundException {
         Yaml parser = new Yaml();
         Map<String, Object> yaml = parser.load(input);
 
@@ -21,16 +19,16 @@ public class EZPluginYMLParser {
         String plugin_code = yaml.get("plugin-code").toString();
         String api_version = yaml.get("api-version").toString();
 
-        assert name != null;
-        assert main != null;
-        assert version != null;
-        assert plugin_code != null;
-        assert api_version != null;
+        String description = yaml.get("description").toString();
+        String author = yaml.get("author").toString();
 
-        //description = yaml.get("description").toString();
-        //author = yaml.get("author").toString();
 
-        EZPluginYML yml = new EZPluginYML(name, main, version, plugin_code, api_version, null, null, null, null);
+        Map<String, String> dependencies = parser.load(parser.dump(yaml.get("dependencies")));
+        List<String> dependencyPack = parser.load(parser.dump(dependencies.get("ezpack")));
+        List<String> dependencyPlugin = parser.load(parser.dump(dependencies.get("ezplugin")));
+
+        EZPlugin yml = new EZPlugin(name, main, version, plugin_code, api_version,
+                description, author, dependencyPack, dependencyPlugin);
         return yml;
     }
 }

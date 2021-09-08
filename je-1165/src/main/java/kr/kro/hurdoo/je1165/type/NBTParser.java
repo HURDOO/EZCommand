@@ -12,8 +12,11 @@ public class NBTParser implements EZDataParser {
 
         NBT nbt = new NBT(name,parse);
 
-        EZBlockElement element = EZBlockElementParser.parse(nbt,"nbt", object.get("value").getAsJsonObject());
+        EZBlockElement element = EZBlockElementParser.parse("nbt", object.get("value").getAsJsonObject());
         nbt.setValue(element);
+
+        NBT.nbts.add(nbt);
+        NBT.nbtMap.put(nbt.getName(),nbt);
 
         return nbt;
     }

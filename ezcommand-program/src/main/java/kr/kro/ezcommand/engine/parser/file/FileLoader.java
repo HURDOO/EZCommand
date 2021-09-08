@@ -1,18 +1,19 @@
 package kr.kro.ezcommand.engine.parser.file;
 
-import kr.kro.ezcommand.engine.thirdparty.plugin.EZJavaPlugin;
 import kr.kro.ezcommand.engine.thirdparty.plugin.EZPluginLoader;
+import org.apache.commons.lang3.Validate;
+//import kr.kro.ezcommand.engine.thirdparty.plugin.EZJavaPlugin;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
+/*import java.lang.reflect.InvocationTargetException;
+import java.util.Enumeration;
+import java.net.URLClassLoader;
 import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.util.jar.JarFile;*/
 
 public class FileLoader {
     public static void loadEZPacks() {
@@ -30,7 +31,9 @@ public class FileLoader {
     private static List<File> getFiles(File dir) {
         List<File> list = new ArrayList<>();
 
-        for(File file : dir.listFiles()) {
+        File[] files = dir.listFiles();
+        Validate.notNull(files,"Files of this dir is null: " + dir.getPath());
+        for(File file : files) {
             //System.out.println(file.getName());
             if(file.isDirectory())
                 list.addAll(getFiles(file));
@@ -43,6 +46,7 @@ public class FileLoader {
 
     private static List<File> temp_loadEZPacks() {
         URL root = FileLoader.class.getResource("/MC_Java_1.16.5");
+        Validate.notNull(root,"cannot find test pack");
 
         List<File> list = new ArrayList<>();
         try {
@@ -60,7 +64,7 @@ public class FileLoader {
         EZPluginLoader.load();
     }
 
-    private static List<Class<? extends EZJavaPlugin>> temp_loadEZPlugins() {
+    /*private static List<Class<? extends EZJavaPlugin>> temp_loadEZPlugins() {
         try
         {
             String path ="D:\\1_Coding\\EZCommand\\je-1165\\build\\libs\\je-1165-Alpha-0.1.jar";
@@ -112,5 +116,5 @@ public class FileLoader {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 }

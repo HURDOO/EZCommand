@@ -1,7 +1,5 @@
 package kr.kro.hurdoo.je1165.type.entity;
 
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -14,13 +12,17 @@ public class EntityNode extends HBox {
     ImageView image;
 
     public EntityNode(Entity entity) {
-        if(entity.getImage() != null)
-        {
+        if(entity.getImage() != null) {
             image = new ImageView(new Image(entity.getImage().toURI().toString()));
-            if(entity.isRealEntity()) text = new Text(entity.getName());
-            else text = new Text("#" + entity.getName());
-            getChildren().addAll(image,text);
+            getChildren().add(image);
         }
+        if(entity.isRealEntity()) text = new Text(entity.getName());
+        else text = new Text("#" + entity.getName());
+        getChildren().add(text);
         this.entity = entity;
+    }
+
+    public EntityNode clone() throws CloneNotSupportedException {
+        return new EntityNode(entity);
     }
 }

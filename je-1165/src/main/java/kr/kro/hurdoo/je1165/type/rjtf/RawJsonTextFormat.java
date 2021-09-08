@@ -2,25 +2,23 @@ package kr.kro.hurdoo.je1165.type.rjtf;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import javafx.application.Platform;
 import javafx.scene.control.Button;
-import kr.kro.ezcommand.engine.parser.EZBlock;
+import javafx.scene.control.Tooltip;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
-import kr.kro.ezcommand.engine.parser.EZElementContainer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RawJsonTextFormat implements EZBlockElement {
 
-    private Button ui = new Button("");
+    private final Button ui = new Button("");
 
     public List<JsonText> getContent() {
         return content;
     }
-    private List<JsonText> content = new ArrayList<>();
+    private final List<JsonText> content = new ArrayList<>();
 
-    private String id;
+    private final String id;
     private boolean useSmallQuote;
 
     public RawJsonTextFormat(String name, JsonObject object) {
@@ -28,6 +26,7 @@ public class RawJsonTextFormat implements EZBlockElement {
         this.object = object;
 
         String description = object.get("description").getAsString();
+        ui.setTooltip(new Tooltip(description));
         String value = object.get("default").getAsString();
 
         try {
@@ -89,7 +88,7 @@ public class RawJsonTextFormat implements EZBlockElement {
         ui.setText(builder.toString());
         // resize
     }
-    private JsonObject object;
+    private final JsonObject object;
     public RawJsonTextFormat clone() {
         RawJsonTextFormat clone;
         clone = new RawJsonTextFormat(id,object);

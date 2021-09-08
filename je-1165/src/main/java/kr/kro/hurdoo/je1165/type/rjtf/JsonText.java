@@ -20,47 +20,37 @@ public class JsonText {
     private ClickEvent clickEvent = null;
     private HoverEvent hoverEvent = null;
 
-    private List<JsonText> extra = new ArrayList<>();
+    private final List<JsonText> extra = new ArrayList<>();
 
     public JsonObject toJson() {
         JsonObject object = new JsonObject();
-        boolean onlyText = true;
         if (color != null && color != Color.TRANSPARENT) {
-            onlyText = false;
             object.addProperty("color", parseHelper.colorToHex(color));
         }
         if (bold) {
-            onlyText = false;
             object.addProperty("bold", true);
         }
         if (italic) {
-            onlyText = false;
             object.addProperty("italic", true);
         }
         if (obfuscated) {
-            onlyText = false;
             object.addProperty("obfuscated", true);
         }
         if (underlined) {
-            onlyText = false;
             object.addProperty("underlined", true);
         }
         if (strikethrough) {
-            onlyText = false;
             object.addProperty("strikethrough", true);
         }
         try {
             object.add("clickEvent", clickEvent.toJSON());
-            onlyText = false;
         } catch (NullPointerException ignored) {
         }
         try {
             object.add("hoverEvent", hoverEvent.toJSON());
-            onlyText = false;
         } catch (NullPointerException ignored) {
         }
         if (!extra.isEmpty()) {
-            onlyText = false;
             JsonArray array = new JsonArray();
             for (JsonText object1 : extra) {
                 if (object1.toJsonString().startsWith("\""))
@@ -190,6 +180,8 @@ public class JsonText {
     public List<JsonText> getExtra() {
         return extra;
     }
+
+    // @TODO: make extra
     /* public void setExtra(List<JsonText> extra) {
         this.extra = extra;
     } */

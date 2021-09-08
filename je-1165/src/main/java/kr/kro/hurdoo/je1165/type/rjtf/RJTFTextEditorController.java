@@ -8,8 +8,6 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
-import kr.kro.hurdoo.je1165.type.rjtf.JsonText;
-import kr.kro.hurdoo.je1165.type.rjtf.RawJsonTextFormat;
 import org.fxmisc.richtext.InlineCssTextArea;
 
 import java.net.URL;
@@ -39,7 +37,7 @@ public class RJTFTextEditorController implements Initializable
 
         bold.setOnAction(event -> {
             int start = area.getSelection().getStart(), end = area.getSelection().getEnd();
-            String isBold = getStyleValue(area.getStyleOfChar(start),"-fx-font-weight",true);
+            String isBold = getStyleValue(area.getStyleOfChar(start),"-fx-font-weight");
 
             assert isBold != null;
             if(isBold.equalsIgnoreCase("bold")) {
@@ -58,8 +56,9 @@ public class RJTFTextEditorController implements Initializable
 
         italic.setOnAction(event -> {
             int start = area.getSelection().getStart(), end = area.getSelection().getEnd();
-            String isItalic = getStyleValue(area.getStyleOfChar(start),"-fx-font-family",true)
-                    .replace("\"","");
+            String isItalic = getStyleValue(area.getStyleOfChar(start),"-fx-font-family");
+            assert isItalic != null;
+            isItalic = isItalic.replace("\"","");
 
             if(isItalic.equalsIgnoreCase("NanumBarunGothic_Italic")) {
                 replaceStyle(start,end,"-fx-font-family","NanumBarunGothic");
@@ -77,7 +76,7 @@ public class RJTFTextEditorController implements Initializable
 
         underlined.setOnAction(event -> {
             int start = area.getSelection().getStart(), end = area.getSelection().getEnd();
-            String isUnderlined = getStyleValue(area.getStyleOfChar(start),"-fx-underline",true);
+            String isUnderlined = getStyleValue(area.getStyleOfChar(start),"-fx-underline");
 
             assert isUnderlined != null;
             if(isUnderlined.equalsIgnoreCase("true")) {
@@ -96,7 +95,7 @@ public class RJTFTextEditorController implements Initializable
 
         strikethrough.setOnAction(event -> {
             int start = area.getSelection().getStart(), end = area.getSelection().getEnd();
-            String isStrikethrough = getStyleValue(area.getStyleOfChar(start),"-fx-strikethrough",true);
+            String isStrikethrough = getStyleValue(area.getStyleOfChar(start),"-fx-strikethrough");
 
             assert isStrikethrough != null;
             if(isStrikethrough.equalsIgnoreCase("true")) {
@@ -115,7 +114,7 @@ public class RJTFTextEditorController implements Initializable
 
         obfuscated.setOnAction(event -> {
             int start = area.getSelection().getStart(), end = area.getSelection().getEnd();
-            String isObfuscated = getStyleValue(area.getStyleOfChar(start),"-rtfx-background-color",true);
+            String isObfuscated = getStyleValue(area.getStyleOfChar(start),"-rtfx-background-color");
 
             assert isObfuscated != null;
             if(isObfuscated.equalsIgnoreCase("#bababa")) {
@@ -141,42 +140,43 @@ public class RJTFTextEditorController implements Initializable
         area.selectionProperty().addListener((observable, oldValue, newValue) -> {
             int start = newValue.getStart();
 
-            String str = getStyleValue(area.getStyleOfChar(start),"-fx-font-weight",true);
+            String str = getStyleValue(area.getStyleOfChar(start),"-fx-font-weight");
             assert str != null;
             if(str.equalsIgnoreCase("bold"))
                 ((FontAwesomeIconView) bold.getGraphic()).setTextFill(Color.SKYBLUE.darker());
             else if(str.equalsIgnoreCase("normal"))
                 ((FontAwesomeIconView) bold.getGraphic()).setTextFill(Color.BLACK);
 
-            str = getStyleValue(area.getStyleOfChar(start),"-fx-font-family",true)
-                .replace("\"","");
+            str = getStyleValue(area.getStyleOfChar(start),"-fx-font-family");
+            assert str != null;
+            str = str.replace("\"","");
             if(str.equalsIgnoreCase("NanumBarunGothic_Italic"))
                 ((FontAwesomeIconView) italic.getGraphic()).setTextFill(Color.SKYBLUE.darker());
             else if(str.equalsIgnoreCase("NanumBarunGothic"))
                 ((FontAwesomeIconView) italic.getGraphic()).setTextFill(Color.BLACK);
 
-            str = getStyleValue(area.getStyleOfChar(start),"-fx-underline",true);
+            str = getStyleValue(area.getStyleOfChar(start),"-fx-underline");
             assert str != null;
             if(str.equalsIgnoreCase("true"))
                 ((FontAwesomeIconView) underlined.getGraphic()).setTextFill(Color.SKYBLUE.darker());
             else if(str.equalsIgnoreCase("false"))
                 ((FontAwesomeIconView) underlined.getGraphic()).setTextFill(Color.BLACK);
 
-            str = getStyleValue(area.getStyleOfChar(start),"-fx-strikethrough",true);
+            str = getStyleValue(area.getStyleOfChar(start),"-fx-strikethrough");
             assert str != null;
             if(str.equalsIgnoreCase("true"))
                 ((FontAwesomeIconView) strikethrough.getGraphic()).setTextFill(Color.SKYBLUE.darker());
             else if(str.equalsIgnoreCase("false"))
                 ((FontAwesomeIconView) strikethrough.getGraphic()).setTextFill(Color.BLACK);
 
-            str = getStyleValue(area.getStyleOfChar(start),"-rtfx-background-color",true);
+            str = getStyleValue(area.getStyleOfChar(start),"-rtfx-background-color");
             assert str != null;
             if(str.equalsIgnoreCase("#bababa"))
                 ((FontAwesomeIconView) obfuscated.getGraphic()).setTextFill(Color.SKYBLUE.darker());
             else if(str.equalsIgnoreCase("none"))
                 ((FontAwesomeIconView) obfuscated.getGraphic()).setTextFill(Color.BLACK);
 
-            str = getStyleValue(area.getStyleOfChar(start),"-fx-fill",true);
+            str = getStyleValue(area.getStyleOfChar(start),"-fx-fill");
             assert str != null;
             color.setValue(Color.valueOf(str));
         });
@@ -242,7 +242,7 @@ public class RJTFTextEditorController implements Initializable
     public void save() {
         now.getContent().clear();
         now.getContent().addAll(toJson());
-    };
+    }
 
     public List<JsonText> toJson() {
         List<JsonText> texts = new LinkedList<>();
@@ -254,30 +254,37 @@ public class RJTFTextEditorController implements Initializable
 
             text.setText(area.getText(start,end));
 
-            str = getStyleValue(style,"-fx-fill",true);
+            str = getStyleValue(style,"-fx-fill");
+            assert str != null;
             text.setColor(Color.valueOf(str));
 
-            str = getStyleValue(style,"-fx-font-weight",true);
+            str = getStyleValue(style,"-fx-font-weight");
+            assert str != null;
             if(str.equalsIgnoreCase("bold")) text.setBold(true);
             else if(str.equalsIgnoreCase("normal")) text.setBold(false);
             else throw new IllegalArgumentException("bold is: " + str);
 
-            str = getStyleValue(style,"-fx-font-family",true).replace("\"","");
+            str = getStyleValue(style,"-fx-font-family");
+            assert str != null;
+            str = str.replace("\"","");
             if(str.equalsIgnoreCase("NanumBarunGothic_Italic")) text.setItalic(true);
             else if (str.equalsIgnoreCase("NanumBarunGothic")) text.setItalic(false);
             else throw new IllegalArgumentException("italic is: " + str);
 
-            str = getStyleValue(style,"-fx-underline",true);
+            str = getStyleValue(style,"-fx-underline");
+            assert str != null;
             if(str.equalsIgnoreCase("true")) text.setUnderlined(true);
             else if (str.equalsIgnoreCase("false")) text.setUnderlined(false);
             else throw new IllegalArgumentException("underlined is: " + str);
 
-            str = getStyleValue(style,"-fx-strikethrough",true);
+            str = getStyleValue(style,"-fx-strikethrough");
+            assert str != null;
             if(str.equalsIgnoreCase("true")) text.setStrikethrough(true);
             else if (str.equalsIgnoreCase("false")) text.setStrikethrough(false);
             else throw new IllegalArgumentException("strikethrough is: " + str);
 
-            str = getStyleValue(style,"-rtfx-background-color",true);
+            str = getStyleValue(style,"-rtfx-background-color");
+            assert str != null;
             if(str.equalsIgnoreCase("#bababa")) text.setObfuscated(true);
             else if (str.equalsIgnoreCase("none")) text.setObfuscated(false);
             else throw new IllegalArgumentException("background for obfuscated is: " + str);
@@ -298,17 +305,17 @@ public class RJTFTextEditorController implements Initializable
                 .toUpperCase();
     }
 
-    private String getStyleValue(String style,String key,boolean withoutSpaces) {
+    private String getStyleValue(String style,String key) {
         String[] splited = style.split(";");
         for(String str : splited) {
             String blankRemoved = str.replace(" ","").replace("\0","");
             if(blankRemoved.startsWith(key))
             {
-                if(withoutSpaces) {
+                //if(withoutSpaces) {
                     return str.replaceFirst(key,"").replace(":","")
                             .replace(" ","").replace("\0","");
-                }
-                return str.replaceFirst(key,"").replace(':','\0');
+                //}
+                //return str.replaceFirst(key,"").replace(':','\0');
             }
         }
         return null;
@@ -319,7 +326,9 @@ public class RJTFTextEditorController implements Initializable
         {
             String origin = area.getStyleOfChar(i);
 
-            if(getStyleValue(origin,key,true).equalsIgnoreCase(value)) continue;
+            String str = getStyleValue(origin,key);
+            assert str != null;
+            if(str.equalsIgnoreCase(value)) continue;
 
             String[] splitedone = origin.split(key);
             if(splitedone.length != 2) throw new IllegalArgumentException("style is: " + origin);

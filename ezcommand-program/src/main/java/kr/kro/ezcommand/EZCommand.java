@@ -4,8 +4,7 @@ import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
 import kr.kro.ezcommand.engine.parser.file.EZData;
 import kr.kro.ezcommand.engine.parser.file.EZDataParser;
-import kr.kro.ezcommand.engine.thirdparty.EZPack;
-import kr.kro.ezcommand.engine.thirdparty.plugin.EZJavaPlugin;
+import kr.kro.ezcommand.engine.thirdparty.pack.EZPack;
 import kr.kro.ezcommand.engine.thirdparty.plugin.EZPlugin;
 
 import java.util.ArrayList;

@@ -4,6 +4,9 @@ import kr.kro.ezcommand.EZCommand;
 import org.apache.commons.lang3.Validate;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -14,9 +17,10 @@ import java.util.Objects;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
 
 public class EZPluginLoader {
-    private static List<PreparedEZPlugin> preparedPlugins = new LinkedList<>();
+    private static final List<PreparedEZPlugin> preparedPlugins = new LinkedList<>();
 
     public static void prepare() {
         File dir = new File(EZCommand.EZPluginFolder);
@@ -36,8 +40,8 @@ public class EZPluginLoader {
             try {
                 if (file.isDirectory() || !file.getName().endsWith(".jar")) continue;
                 JarFile jarFile = new JarFile(file);
-                EZPluginYML yml = EZPluginYMLParser.parse(
-                        jarFile.getInputStream(jarFile.getEntry("ezplugin.yml")));
+                jarFile.getEntry("ezplugin.yml");
+                InputStream yml = jarFile.getInputStream(jarFile.getEntry("ezplugin.yml"));
                 PreparedEZPlugin prePlugin = new PreparedEZPlugin(yml, file.getPath());
                 preparedPlugins.add(prePlugin);
             } catch (Exception e)
@@ -66,17 +70,24 @@ public class EZPluginLoader {
 
         for(PreparedEZPlugin prePlugin : preparedPlugins)
         {
-            EZPluginYML yml = prePlugin.yml;
-            Logger.getGlobal().log(Level.FINEST,"Loading plugin " + yml.getPluginCode() + " v." + yml.getVersion());
+            EZPlugin plugin = null;
             try {
-                loader.loadClass(yml.getMain()).asSubclass(EZJavaPlugin.class).getConstructor().newInstance().onEnable();
+                plugin = EZPluginYMLParser.parse(prePlugin.yml);
+            } catch (FileNotFoundException e) {
+                Logger.getGlobal().log(Level.WARNING,"Exception while getting input of yml: " + prePlugin.jarPath);
+                e.printStackTrace();
+                continue;
+            }
+            Logger.getGlobal().log(Level.FINEST,"Loading plugin " + plugin.getPluginCode() + " v." + plugin.getVersion());
+
+            try {
+                loader.loadClass(plugin.getMain()).asSubclass(EZJavaPlugin.class).getConstructor().newInstance().onEnable();
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
-                Logger.getGlobal().log(Level.WARNING,"cannot find main class of ezplugin '" + yml.getName() + "'");
+                Logger.getGlobal().log(Level.WARNING,"cannot find main class of ezplugin '" + plugin.getName() + "'");
                 e.printStackTrace();
             }
-            EZPlugin plugin = new EZPlugin(yml.getName(),yml.getVersion(),yml.getPluginCode(),yml.getDescription(),yml.getAuthor());
             EZCommand.plugins.add(plugin);
         }
     }
@@ -84,10 +95,10 @@ public class EZPluginLoader {
 
 class PreparedEZPlugin
 {
-    EZPluginYML yml;
+    InputStream yml;
     String jarPath;
 
-    public PreparedEZPlugin(EZPluginYML yml,String jarPath)
+    public PreparedEZPlugin(InputStream yml, String jarPath)
     {
         this.yml = yml;
         this.jarPath = jarPath;

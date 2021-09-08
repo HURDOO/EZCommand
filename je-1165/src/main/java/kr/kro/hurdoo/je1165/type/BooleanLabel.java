@@ -5,19 +5,17 @@ import com.google.gson.JsonObject;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Tooltip;
-import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
-import kr.kro.ezcommand.engine.parser.EZElementContainer;
 
 public class BooleanLabel implements EZBlockElement {
 
-    private CheckBox ui = new CheckBox();
+    private final CheckBox ui = new CheckBox();
     @Override
     public Node getUI() {
         return ui;
     }
 
-    private String id;
+    private final String id;
     @Override
     public String getId() {
         return id;
@@ -51,14 +49,14 @@ public class BooleanLabel implements EZBlockElement {
         }
 
         boolean value;
-        if(object.get("default") != null) value = (boolean) object.get("default").getAsBoolean();
+        if(object.get("default") != null) value = object.get("default").getAsBoolean();
         else value = false;
         ui.setSelected(value);
 
         ui.getStyleClass().add("font");
     }
 
-    private JsonObject object;
+    private final JsonObject object;
 
     @Override
     public BooleanLabel clone() {

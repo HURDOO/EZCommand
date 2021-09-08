@@ -1,0 +1,14 @@
+{
+  "type" : "ezblock",
+  "description" : "테스트",
+
+  "content" : "%test%",
+  "parse" : "%test%",
+
+  "args" : {
+    "test" : {
+      "type" : "entity_type_selector",
+      "description" : "테스트1"
+    }
+  }
+}

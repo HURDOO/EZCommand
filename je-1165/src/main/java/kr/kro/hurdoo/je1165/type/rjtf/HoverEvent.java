@@ -7,7 +7,7 @@ public class HoverEvent {
         SHOW_TEXT,
         SHOW_ITEM,
         SHOW_ENTITY,
-        NONE;
+        NONE
     }
 
     private HoverActionType action = HoverActionType.NONE;

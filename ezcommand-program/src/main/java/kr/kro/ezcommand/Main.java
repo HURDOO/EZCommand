@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import kr.kro.ezcommand.engine.parser.file.FileParser;
-import kr.kro.ezcommand.engine.thirdparty.plugin.EZPluginLoader;
 import kr.kro.ezcommand.ui.stage.MainStage;
 
 public class Main extends Application
@@ -16,7 +15,7 @@ public class Main extends Application
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
 
         EZCommand.renew("Test","Alpha-0.2");
 

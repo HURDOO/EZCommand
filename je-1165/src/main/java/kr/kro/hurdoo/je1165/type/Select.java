@@ -8,28 +8,23 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.text.Text;
 import kr.kro.ezcommand.Main;
-import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
-import kr.kro.ezcommand.engine.parser.EZElementContainer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Select implements EZBlockElement {
-    private java.lang.String id;
-    public java.lang.String getId() {
+    private final String id;
+    public final String getId() {
         return id;
     }
 
-    private ChoiceBox ui = new ChoiceBox();
-    public ChoiceBox getUI() {
+    private final ChoiceBox<String> ui = new ChoiceBox<>();
+    public ChoiceBox<String> getUI() {
         return ui;
     }
 
-    private List<String> parseList = new ArrayList<>();
-    public List<String> getParseList() {
-        return parseList;
-    }
+    public final List<String> parseList = new ArrayList<>();
 
     public void select(int index) {
         ui.getSelectionModel().select(index);
@@ -38,7 +33,7 @@ public class Select implements EZBlockElement {
     public Select(String key, JsonObject object) {
         this.object = object;
 
-        String description = object.get("description").getAsString();;
+        String description = object.get("description").getAsString();
         JsonArray list2 = object.get("parse").getAsJsonArray();
         for(JsonElement element : list2) {
             parseList.add(element.getAsString());
@@ -54,11 +49,9 @@ public class Select implements EZBlockElement {
         }
         ui.getSelectionModel().select(value);
         ui.getStyleClass().add("font");
-        ui.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            resize(newValue.toString());
-        });
+        ui.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> resize(newValue));
         ui.setTooltip(new Tooltip(description));
-        resize(ui.getItems().get(value).toString());
+        resize(ui.getItems().get(value));
     }
 
     private void resize(String value) {
@@ -71,11 +64,10 @@ public class Select implements EZBlockElement {
     }
 
     public java.lang.String toCommand() {
-        if(parseList == null) return ui.getSelectionModel().getSelectedItem().toString();
         return parseList.get(ui.getSelectionModel().getSelectedIndex());
     }
 
-    private JsonObject object;
+    private final JsonObject object;
 
     @Override
     public Select clone() {

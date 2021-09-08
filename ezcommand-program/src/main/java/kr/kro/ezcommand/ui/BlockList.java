@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlockList {
-    private static VBox ui = new VBox();
+    private static final VBox ui = new VBox();
     public static VBox getUi() {
         return ui;
     }

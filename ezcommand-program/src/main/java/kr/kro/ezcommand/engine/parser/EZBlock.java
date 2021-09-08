@@ -2,11 +2,9 @@ package kr.kro.ezcommand.engine.parser;
 
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
-import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
@@ -21,6 +19,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+// @TODO: Handle Warnings
 public class EZBlock implements EZBlockTemplate {
 
     public EZBlock(String description, String parse) {
@@ -35,7 +34,7 @@ public class EZBlock implements EZBlockTemplate {
         ui.getStylesheets().add("/src/main/resources/css/Font.css");
         ui.getStylesheets().add("/css/Font.css");
 
-        path = new Path();
+        Path path = new Path();
         root.getChildren().add(path);
         root.getChildren().add(ui);
         ui.setLayoutX(contentDistanceX);
@@ -44,23 +43,20 @@ public class EZBlock implements EZBlockTemplate {
 
         /* 마우스 드래그 설정 */
         EZBlockUtil.setMovable(this);
-        Platform.runLater(() -> {
-            this.resize();
-        });
+        Platform.runLater(this::resize);
 
         //setBackgroundColor(Color.AQUA); //for test, remove later
     }
 
-    private String description;
+    private final String description;
 
     /**
      * 요소들을 가로로 나열해야 하기에 기본 Pane으로 Horizontal Box 사용.
      */
 
-    private HBox ui;
-    private Path path;
-    private AnchorPane root = new AnchorPane();
-    public AnchorPane getUi() {
+    private final HBox ui;
+    private final AnchorPane root = new AnchorPane();
+    public final AnchorPane getUi() {
         return root;
     }
 
@@ -70,11 +66,11 @@ public class EZBlock implements EZBlockTemplate {
      *  - ui.getChildren() (HBox / UI만 저장)
      */
 
-    private HashMap<String,EZBlockElement> elements = new HashMap<>();
+    private final HashMap<String,EZBlockElement> elements = new HashMap<>();
     public HashMap<String, EZBlockElement> getElements() {
         return elements;
     }
-    private List<String> elementList = new LinkedList<>();
+    private final List<String> elementList = new LinkedList<>();
 
     public void addElement(EZBlockElement element) {
         /* 요소 저장 */
@@ -85,9 +81,7 @@ public class EZBlock implements EZBlockTemplate {
         ui.getChildren().add(element.getUI());
 
         /* resize */
-        element.getUI().getProperties().addListener((InvalidationListener) change -> {
-            resize();
-        });
+        element.getUI().getProperties().addListener((InvalidationListener) change -> resize());
     }
 
     boolean isExampleBlock = false;
@@ -101,33 +95,33 @@ public class EZBlock implements EZBlockTemplate {
         StringBuilder command = new StringBuilder();
 
         char[] ch = parse.toCharArray();
-        String str = "";
+        StringBuilder str = new StringBuilder();
         boolean entered = false; // if arg input started
 
         for(char c : ch)
         {
             if(c != '%')
             {
-                str += c;
+                str.append(c);
             }
-            else if(entered == false)
+            else if(!entered)
             {
                 /* normal text */
                 command.append(str);
 
-                str = "";
+                str = new StringBuilder();
                 entered = true;
             }
             else
             {
                 /* arg */
-                command.append(elements.get(str).toCommand());
+                command.append(elements.get(str.toString()).toCommand());
 
-                str = "";
+                str = new StringBuilder();
                 entered = false;
             }
         }
-        if(str != "")
+        if(!str.toString().equals(""))
         {
             // if str doesn't end with '%'
             command.append(str);
@@ -237,6 +231,7 @@ public class EZBlock implements EZBlockTemplate {
             ui.setBackground(new Background(new BackgroundFill(Color.RED,null,null)));*/
     }
 
+    @Override
     public EZBlock clone() throws CloneNotSupportedException {
 
         EZBlock block = new EZBlock(description,parse);
@@ -262,155 +257,147 @@ class EZBlockUtil {
     public static void setMovable(EZBlock block) {
         Pane ui = block.getUi();
 
-        ui.setOnMousePressed(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                if(event.getButton() == MouseButton.PRIMARY)
-                {
-                    if(block.isExampleBlock) {
-                        EZBlock clone;
-                        try {
-                            clone = block.clone();
-                        } catch (CloneNotSupportedException e) {
-                            e.printStackTrace();
-                            return;
-                        }
-
-                        ui.setLayoutX(ui.getLocalToSceneTransform().getTx());
-                        ui.setLayoutY(ui.getLocalToSceneTransform().getTy());
-
-                        int index = BlockList.getUi().getChildren().indexOf(ui);
-                        BlockList.getUi().getChildren().remove(index);
-                        BlockList.getUi().getChildren().add(index,clone.getUi());
-                        MainStage.backPane.getChildren().add(block.getUi());
-
-                        block.setExampleBlock(false);
-                        clone.setExampleBlock(true);
-
-                        Platform.runLater(() -> {
-                            block.resize();
-                            clone.resize();
-                        });
-                    }
-                    else
-                    {
-                        EZTab.nowTab.removeBlock(block);
-                        if(block.getParent() != null) {
-                            block.getParent().setChildren(null);
-                            block.setParent(null);
-                        }
-
-                        ui.setLayoutX(ui.getLocalToSceneTransform().getTx());
-                        ui.setLayoutY(ui.getLocalToSceneTransform().getTy());
-
-                        for(EZBlock block1 : getAllChildren(block))
-                        {
-                            EZTab.nowTab.getUiPane().getChildren().remove(block1.getUi());
-                            MainStage.backPane.getChildren().add(block1.getUi());
-                        }
-                        //MainStage.backPane.getChildren().add(ui);
-                        block.rearrangeFromHere();
+        ui.setOnMousePressed(event -> {
+            if(event.getButton() == MouseButton.PRIMARY)
+            {
+                if(block.isExampleBlock) {
+                    EZBlock clone;
+                    try {
+                        clone = block.clone();
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                        return;
                     }
 
-                    event.consume();
-                    ui.setMouseTransparent(true);
-                    event.setDragDetect(true);
+                    ui.setLayoutX(ui.getLocalToSceneTransform().getTx());
+                    ui.setLayoutY(ui.getLocalToSceneTransform().getTy());
 
-                    saveCurrentMouse(ui);
+                    int index = BlockList.getUi().getChildren().indexOf(ui);
+                    BlockList.getUi().getChildren().remove(index);
+                    BlockList.getUi().getChildren().add(index,clone.getUi());
+                    MainStage.backPane.getChildren().add(block.getUi());
 
-                    ui.requestFocus();
+                    block.setExampleBlock(false);
+                    clone.setExampleBlock(true);
+
+                    Platform.runLater(() -> {
+                        block.resize();
+                        clone.resize();
+                    });
                 }
-            }
-        });
-
-        ui.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                if(event.getButton() == MouseButton.PRIMARY)
+                else
                 {
-                    ui.setMouseTransparent(false);
+                    EZTab.nowTab.removeBlock(block);
+                    if(block.getParent() != null) {
+                        block.getParent().setChildren(null);
+                        block.setParent(null);
+                    }
 
-                    Bounds uiBounds = ui.localToScene(ui.getLayoutBounds());
-                    Bounds paneBounds = EZTab.nowTab.getUiPane().localToScene(EZTab.nowTab.getUiPane().getLayoutBounds());
-                    Bounds paneScreenBounds = EZTab.nowTab.getUiPane().localToScreen(EZTab.nowTab.getUiPane().getLayoutBounds());
-                    Point mouse = MouseInfo.getPointerInfo().getLocation();
-                    //MainStage.backPane.getChildren().remove(ui);
+                    ui.setLayoutX(ui.getLocalToSceneTransform().getTx());
+                    ui.setLayoutY(ui.getLocalToSceneTransform().getTy());
+
                     for(EZBlock block1 : getAllChildren(block))
                     {
-                        MainStage.backPane.getChildren().remove(block1.getUi());
+                        EZTab.nowTab.getUiPane().getChildren().remove(block1.getUi());
+                        MainStage.backPane.getChildren().add(block1.getUi());
                     }
-
-                    if(mouse.getX() >= paneScreenBounds.getMinX()) {
-                        ui.setLayoutX(uiBounds.getMinX() - paneBounds.getMinX());
-                        ui.setLayoutY(uiBounds.getMinY() - paneBounds.getMinY());
-
-                        for(EZBlock block1 : getAllChildren(block))
-                        {
-                            EZTab.nowTab.getUiPane().getChildren().add(block1.getUi());
-                        }
-
-                        if(nextBlock == null) {
-                            EZTab.nowTab.addBlock(block);
-                            getOldest(block).rearrangeFromHere();
-                        } else {
-                            if(nextBlock.getValue() == true) // if nextBlock is parent
-                            {
-                                nextBlock.getKey().setChildren(block);
-                                getOldest(nextBlock.getKey()).rearrangeFromHere();
-                            }
-                            else // if nextblock is children
-                            {
-                                nextBlock.getKey().setParent(block);
-                                if(nextBlock.getKey().getParent() != null)
-                                    EZTab.nowTab.changeBlock(nextBlock.getKey(), getOldest(block));
-                                getOldest(block).rearrangeFromHere();
-                            }
-                        }
-                    }
-                    if(nextBlock != null) {
-                        nextBlock.getKey().getUi().setBorder(null);
-                    }
-                }
-            }
-        });
-
-        ui.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                if(event.getButton() == MouseButton.PRIMARY)
-                {
-                    Point mouse = MouseInfo.getPointerInfo().getLocation();
-                    ui.setLayoutX(mouse.getX() - window_x - diff_x);
-                    ui.setLayoutY(mouse.getY() - window_y - diff_y);
+                    //MainStage.backPane.getChildren().add(ui);
                     block.rearrangeFromHere();
-                    event.setDragDetect(false);
+                }
 
-                    if(nextBlock != null) nextBlock.getKey().getUi().setBorder(null);
+                event.consume();
+                ui.setMouseTransparent(true);
+                event.setDragDetect(true);
 
-                    nextBlock = findNearestBlock(block); // true = return is parent / false = return is children
-                    if(nextBlock != null) {
-                        if(nextBlock.getValue() == true) // if nextBlock is parent
-                        {
-                            nextBlock.getKey().getUi().setBorder(new Border(new BorderStroke(Color.RED, Color.RED, Color.RED, Color.RED,
-                                BorderStrokeStyle.NONE, BorderStrokeStyle.NONE, BorderStrokeStyle.SOLID, BorderStrokeStyle.NONE,
-                                null, new BorderWidths(2), null)));
-                        }
-                        else // if nextBlock is children
-                        {
-                            nextBlock.getKey().getUi().setBorder(new Border(new BorderStroke(Color.BLUE, Color.RED, Color.RED, Color.RED,
-                                    BorderStrokeStyle.SOLID, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE,
-                                    null, new BorderWidths(2), null)));
-                        }
+                saveCurrentMouse(ui);
+
+                ui.requestFocus();
+            }
+        });
+
+        ui.setOnMouseReleased(event -> {
+            if(event.getButton() == MouseButton.PRIMARY)
+            {
+                ui.setMouseTransparent(false);
+
+                Bounds uiBounds = ui.localToScene(ui.getLayoutBounds());
+                Bounds paneBounds = EZTab.nowTab.getUiPane().localToScene(EZTab.nowTab.getUiPane().getLayoutBounds());
+                Bounds paneScreenBounds = EZTab.nowTab.getUiPane().localToScreen(EZTab.nowTab.getUiPane().getLayoutBounds());
+                Point mouse = MouseInfo.getPointerInfo().getLocation();
+                //MainStage.backPane.getChildren().remove(ui);
+                for(EZBlock block1 : getAllChildren(block))
+                {
+                    MainStage.backPane.getChildren().remove(block1.getUi());
+                }
+
+                if(mouse.getX() >= paneScreenBounds.getMinX()) {
+                    ui.setLayoutX(uiBounds.getMinX() - paneBounds.getMinX());
+                    ui.setLayoutY(uiBounds.getMinY() - paneBounds.getMinY());
+
+                    for(EZBlock block1 : getAllChildren(block))
+                    {
+                        EZTab.nowTab.getUiPane().getChildren().add(block1.getUi());
                     }
 
-                   // System.out.printf("mouse:%f, ui: %f\n", mouse.getX(), ui.getLayoutX());
+                    if(nextBlock == null) {
+                        EZTab.nowTab.addBlock(block);
+                        getOldest(block).rearrangeFromHere();
+                    } else {
+                        if(nextBlock.getValue()) // if nextBlock is parent
+                        {
+                            nextBlock.getKey().setChildren(block);
+                            getOldest(nextBlock.getKey()).rearrangeFromHere();
+                        }
+                        else // if nextblock is children
+                        {
+                            nextBlock.getKey().setParent(block);
+                            if(nextBlock.getKey().getParent() != null)
+                                EZTab.nowTab.changeBlock(nextBlock.getKey(), getOldest(block));
+                            getOldest(block).rearrangeFromHere();
+                        }
+                    }
+                }
+                if(nextBlock != null) {
+                    nextBlock.getKey().getUi().setBorder(null);
                 }
             }
         });
 
-        ui.setOnDragDetected(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                if(event.getButton() == MouseButton.PRIMARY)
-                {
-                    ui.startFullDrag();
+        ui.setOnMouseDragged(event -> {
+            if(event.getButton() == MouseButton.PRIMARY)
+            {
+                Point mouse = MouseInfo.getPointerInfo().getLocation();
+                ui.setLayoutX(mouse.getX() - window_x - diff_x);
+                ui.setLayoutY(mouse.getY() - window_y - diff_y);
+                block.rearrangeFromHere();
+                event.setDragDetect(false);
+
+                if(nextBlock != null) nextBlock.getKey().getUi().setBorder(null);
+
+                nextBlock = findNearestBlock(block); // true = return is parent / false = return is children
+                if(nextBlock != null) {
+                    if(nextBlock.getValue()) // if nextBlock is parent
+                    {
+                        nextBlock.getKey().getUi().setBorder(new Border(new BorderStroke(Color.RED, Color.RED, Color.RED, Color.RED,
+                            BorderStrokeStyle.NONE, BorderStrokeStyle.NONE, BorderStrokeStyle.SOLID, BorderStrokeStyle.NONE,
+                            null, new BorderWidths(2), null)));
+                    }
+                    else // if nextBlock is children
+                    {
+                        nextBlock.getKey().getUi().setBorder(new Border(new BorderStroke(Color.BLUE, Color.RED, Color.RED, Color.RED,
+                                BorderStrokeStyle.SOLID, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE, BorderStrokeStyle.NONE,
+                                null, new BorderWidths(2), null)));
+                    }
                 }
+
+               // System.out.printf("mouse:%f, ui: %f\n", mouse.getX(), ui.getLayoutX());
+            }
+        });
+
+        ui.setOnDragDetected(event -> {
+            if(event.getButton() == MouseButton.PRIMARY)
+            {
+                ui.startFullDrag();
             }
         });
     }

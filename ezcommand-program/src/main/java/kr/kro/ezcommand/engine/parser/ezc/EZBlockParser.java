@@ -16,45 +16,40 @@ public class EZBlockParser {
         JsonObject argList = object.get("args").getAsJsonObject();
         String str = "";
         boolean entered = false;
-        Integer textCnt = 0;
+        int textCnt = 0;
 
-        for(int i=0;i<content.length;i++)
-        {
-            if(content[i] != '%')
-                str += content[i];
-            else
-            {
-                if(entered == false) {
+        for (char c : content) {
+            if (c != '%')
+                str += c;
+            else {
+                if (!entered) {
                     /*
                         arg 시작
                         이미 있는 str은 TextLabel로
                      */
-                    TextLabel label = new TextLabel(textCnt,str);
+                    TextLabel label = new TextLabel(textCnt, str);
                     ezBlock.addElement(label);
                     textCnt++;
 
                     entered = true;
-                    str = "";
-                }
-                else {
+                } else {
                     /*
                         arg 끝
                         이미 있는 str을 EZBlockElement로
                      */
                     JsonObject arg = argList.get(str).getAsJsonObject();
-                    EZBlockElement element = EZBlockElementParser.parse(ezBlock,str,arg);
+                    EZBlockElement element = EZBlockElementParser.parse(str, arg);
                     ezBlock.addElement(element);
 
                     entered = false;
-                    str = "";
                 }
+                str = "";
             }
         }
-        if(str != "") {
+        if(!str.equals("")) {
             // 맨 마지막이 TextLabel이어서 %로 끝나지 않았을 경우
             TextLabel label = new TextLabel(textCnt,str);
             ezBlock.addElement(label);
-            textCnt++;
         }
         return ezBlock;
     }

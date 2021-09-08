@@ -4,7 +4,7 @@ import javafx.scene.control.Label;
 
 public class TextLabel implements EZBlockElement {
 
-    private Label ui = new Label();
+    private final Label ui = new Label();
     public Label getUI() {
         return ui;
     }
@@ -32,8 +32,7 @@ public class TextLabel implements EZBlockElement {
 
     @Override
     public TextLabel clone() throws CloneNotSupportedException {
-        TextLabel label = new TextLabel(id,ui.getText());
-        return label;
+        return new TextLabel(id,ui.getText());
     }
 }
 

@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import kr.kro.ezcommand.EZCommand;
 import kr.kro.ezcommand.engine.parser.ezc.EZBlockParser;
-import kr.kro.ezcommand.engine.parser.ezc.YAMLParser;
-import kr.kro.ezcommand.engine.thirdparty.EZPack;
+import kr.kro.ezcommand.engine.thirdparty.pack.EZPackYMLParser;
+import kr.kro.ezcommand.engine.thirdparty.pack.EZPack;
 import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.ui.BlockList;
 import org.yaml.snakeyaml.Yaml;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class FileParser
 {
-    private static Gson gson = new Gson();
+    private static final Gson gson = new Gson();
 
     public static void parse(File file) throws IOException{
 
@@ -31,7 +31,7 @@ public class FileParser
                 e.printStackTrace();
                 return;
             }
-            EZPack pack = YAMLParser.parseEZPack(map);
+            EZPack pack = EZPackYMLParser.parseEZPack(map);
             EZCommand.packs.add(pack);
             return;
         }
@@ -48,9 +48,9 @@ public class FileParser
             /*case "nbt":
                 NBT nbt = NBTParser.parse(object);
                 break;*/
-            case "entity":
+            /*case "entity":
                 System.out.println(file.getName());
-                return;
+                return;*/
             default: // nothing
                 if(!EZCommand.datas.containsKey(type)) throw new IllegalArgumentException("Illegal type!");
                 Class<? extends EZData> dataClass = EZCommand.datas.get(type);

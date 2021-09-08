@@ -1,8 +1,5 @@
 package kr.kro.ezcommand.engine.parser;
 
-import kr.kro.ezcommand.engine.parser.EZBlockElement;
-import kr.kro.ezcommand.engine.parser.EZElementContainer;
-
 import java.util.HashMap;
 
 public interface EZBlockTemplate extends EZElementContainer {
@@ -14,7 +11,9 @@ public interface EZBlockTemplate extends EZElementContainer {
      *
      * @return HashMap of EZBlockElement
      */
-    public HashMap<String, EZBlockElement> getElements();
+    HashMap<String, EZBlockElement> getElements();
+
+    // @TODO: is getElements() really needed?
 
     /**
      * 이 블록의 커맨드 구문을 반환하는 함수입니다.

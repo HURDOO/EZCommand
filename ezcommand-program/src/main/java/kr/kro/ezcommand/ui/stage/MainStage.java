@@ -11,25 +11,18 @@ import kr.kro.ezcommand.engine.EZTab;
 import kr.kro.ezcommand.engine.parser.file.FileLoader;
 import kr.kro.ezcommand.ui.BlockList;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Objects;
 
 public class MainStage
 {
     public static Stage getStage() {
         return stage;
     }
-    public static VBox getBlockList() {
-        return BlockList.getUi();
-    }
-    public static Pane getBlockWorkspace() {
-        return blockWorkspace;
-    }
 
     private static Stage stage;
-    private static SplitPane splitPane;
-    private static Pane blockWorkspace;
-    public static void create() throws FileNotFoundException {
+
+    public static void create() {
         stage = new Stage();
         try {
             // run
@@ -42,19 +35,18 @@ public class MainStage
         stage.setWidth(600);
 
         BorderPane pane = new BorderPane();
-        splitPane = new SplitPane();
+        SplitPane splitPane = new SplitPane();
         splitPane.setDividerPosition(0,0.001);
         pane.setCenter(splitPane);
 
-        FileLoader.loadEZPlugins();
-        FileLoader.loadEZPacks();
         splitPane.getItems().add(BlockList.getUi());
 
-        /*Pane*/ blockWorkspace = new Pane();
+        /*Pane*/
+        Pane blockWorkspace = new Pane();
         splitPane.getItems().add(blockWorkspace);
 
         try {
-            pane.setTop(FXMLLoader.load(MainStage.class.getResource("/fxml/MainStage_MenuBar.fxml")));
+            pane.setTop(FXMLLoader.load(Objects.requireNonNull(MainStage.class.getResource("/fxml/MainStage_MenuBar.fxml"))));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,12 +65,11 @@ public class MainStage
         stage.show();
 
         //ScenicView.show(scene);
+
+
+        FileLoader.loadEZPlugins();
+        FileLoader.loadEZPacks();
     }
 
     public static Pane backPane = new Pane();
-    public static double getSeparatorPosition() {
-        double div = splitPane.getDividers().get(0).getPosition();
-        double width = stage.getWidth();
-        return width*div;
-    }
 }

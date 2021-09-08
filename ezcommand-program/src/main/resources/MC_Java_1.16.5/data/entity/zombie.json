@@ -1,0 +1,7 @@
+{
+  "type" : "entity",
+  "name" : "좀비",
+  "parse" : "minecraft:zombie",
+  "nbt" : [],
+  "isRealEntity" : true
+}

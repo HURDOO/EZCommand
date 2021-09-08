@@ -7,26 +7,22 @@ import javafx.css.PseudoClass;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.text.Text;
-import kr.kro.ezcommand.engine.parser.EZBlock;
 import kr.kro.ezcommand.engine.parser.EZBlockElement;
-import kr.kro.ezcommand.engine.parser.EZElementContainer;
 
 public class Number implements EZBlockElement {
-    public java.lang.String getId() {
+    public String getId() {
         return id;
     }
 
-    private java.lang.String id;
+    private final String id;
 
     public TextField getUI() {
         return ui;
     }
 
+    private final TextField ui = new TextField();
 
-
-    private TextField ui = new TextField();
-
-    private PseudoClass incorrect = PseudoClass.getPseudoClass("incorrect");
+    private final PseudoClass incorrect = PseudoClass.getPseudoClass("incorrect");
 
     private Long min_long, max_long, value_long;
     private Double min_double, max_double, value_double;
@@ -117,14 +113,14 @@ public class Number implements EZBlockElement {
         // https://stackoverflow.com/questions/12737829/javafx-textfield-resize-to-text-length
     }
 
-    private Double parseDouble(String s) throws IllegalArgumentException,NumberFormatException {
+    private Double parseDouble(String s) throws IllegalArgumentException {
         double num = Double.parseDouble(s);
         if(num < min_double || num > max_double)
             throw new IllegalArgumentException();
         return num;
     }
 
-    private Long parseLong(String s) throws IllegalArgumentException,NumberFormatException {
+    private Long parseLong(String s) throws IllegalArgumentException {
         long num = Long.parseLong(s);
         if(num < min_long || num > max_long)
             throw new IllegalArgumentException();
@@ -153,6 +149,7 @@ public class Number implements EZBlockElement {
                 break;
             case "BYTE_MAX":
                 s = Byte.toString(Byte.MAX_VALUE);
+                break;
             case "SHORT_MIN":
                 s = Short.toString(Short.MIN_VALUE);
                 break;
@@ -193,7 +190,7 @@ public class Number implements EZBlockElement {
         return s;
     }
 
-    private JsonObject object;
+    private final JsonObject object;
 
     @Override
     public Number clone() {

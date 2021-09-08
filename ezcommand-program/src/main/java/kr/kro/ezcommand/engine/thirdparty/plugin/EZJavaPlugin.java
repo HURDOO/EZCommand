@@ -10,6 +10,8 @@ public class EZJavaPlugin {
     public void onEnable() {
 
     }
+
+    @SuppressWarnings("unused")
     public void onDisable() {
 
     }
