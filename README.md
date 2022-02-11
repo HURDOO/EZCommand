@@ -2,9 +2,5 @@
 
 EZCommand
 =========
-A Minecraft Command Generator with Block Coding
-**IN HEAVY DEVELOPMENT**
-<br>
-(Currently only supports Korean, we welcome English Translators :)
-<hr>
-[한국어](./README_KR.md,"한국어")
+A Minecraft Command Generator with Block Coding. Written in Java, Supports any PCs that supports JavaFX.
+**CURRENTLY IN HEAVY DEVELOPMENT**
