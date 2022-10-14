@@ -3,4 +3,5 @@
 EZCommand
 =========
 A Minecraft Command Generator with Block Coding. Written in Java, Supports any PCs that supports JavaFX.
-**CURRENTLY IN HEAVY DEVELOPMENT**
+
+**Development Stopped. Please check [EZCommand-blockly](https://github.com/HURDOO/EZCommand-blockly)**
